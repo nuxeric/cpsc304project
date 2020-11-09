@@ -9,9 +9,6 @@
         <h1><%= title %></h1>
         <p>Welcome to <%= title %>.</p>
 
-        <!-- <form name="form1" method="POST" action="/student/add"> -->
-
-
         <form name="create_personnel_form" method="POST" action="/personnel/create">
           <div>
             <label for="first">
@@ -54,32 +51,11 @@
             <label for="responsibilities">
               <span>Responsibilites</span>
             </label>
-            <!-- <input type="text" id="responsibilities" name="line_worker_responsibilities" placeholder="Responsible for..."> -->
             <textarea wrap="soft" id="responsibilities" name="line_worker_responsibilities" placeholder="Responsible for..."></textarea>
           </div>
           <button type="submit">Create user</button>
           <button type="reset">Reset</button>
         </form>
-
-        <!-- Add Users -->
-        <!-- <div class="users-column add-user-col">
-          <div class="column-header">Add User:</div>
-          <div>
-              <input id="name-input" placeholder="Name">
-          </div>
-          <div>
-              <input id="email-input" placeholder="Email">
-          </div>
-          <div>
-              <button id="add-user-btn">Add</button>
-          </div>
-        </div> -->
-
-        <!-- Display Users -->
-        <!-- <div class="users-column">
-            <div class="column-header">Users:</div>
-            <div id="all-users-anchor"></div>
-        </div> -->
       </div>
     </main>
   </body>
