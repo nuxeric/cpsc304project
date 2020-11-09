@@ -13,5 +13,15 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: cpsc304_dev
 
+  backend:
+    container_name: cpsc304-backend
+    build:
+      context: ./backend
+    depends_on:
+      - postgres
+    expose:
+      - "8080"
+    env_file: ./backend/.env
+
 volumes:
   db-data:
