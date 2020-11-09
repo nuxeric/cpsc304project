@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../layout/head.ejs') -%>
+  </head>
+  <body>
+    <main>
+      <div class="hero">
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %>.</p>
+
+        <!-- <form name="form1" method="POST" action="/student/add"> -->
+
+
+        <form name="create_personnel_form" method="POST" action="/test">
+          <div>
+            <label for="first">
+              <span>First name</span>
+              <abbr title="required" aria-label="required">*</abbr>
+            </label>
+            <input type="text" id="first" name="first_name" placeholder="First..." required maxlength="100" pattern="\w+">
+          </div>
+          <div>
+            <label for="last">
+              <span>Last name</span>
+              <abbr title="required" aria-label="required">*</abbr>
+            </label>
+            <input type="text" id="last" name="last_name" placeholder="Last..." required maxlength="100" pattern="\w+">
+          </div>
+          <div>
+            <label for="bdate">
+              <span>Birthdate</span>
+              <abbr title="required" aria-label="required">*</abbr>
+            </label>
+            <input type="date" id="bdate" name="birthdate" placeholder="mm-dd-yyyy" required>
+          </div>
+          <fieldset>
+            <legend>Permissions</legend>
+              <label for="role_1">
+                <input type="checkbox" name="size" id="role_1" value="line_worker">
+                <span>Line operations</span>
+              </label>
+              <label for="role_2">
+                <input type="checkbox" name="size" id="role_2" value="inventory_manager">
+                <span>Inventory</span>
+              </label>
+              <label for="role_3">
+                <input type="checkbox" name="size" id="role_3" value="personnel_manager">
+                <span>Personnel Admin</span>
+              </label>
+          </fieldset>
+          <div>
+          <div class="line-worker-responsibilities-container">
+            <label for="responsibilities">
+              <span>Responsibilites</span>
+            </label>
+            <!-- <input type="text" id="responsibilities" name="line_worker_responsibilities" placeholder="Responsible for..."> -->
+            <textarea wrap="soft" id="responsibilities" name="line_worker_responsibilities" placeholder="Responsible for..."></textarea>
+          </div>
+          <button type="submit">Create user</button>
+          <button type="reset">Reset</button>
+        </form>
+
+        <!-- Add Users -->
+        <!-- <div class="users-column add-user-col">
+          <div class="column-header">Add User:</div>
+          <div>
+              <input id="name-input" placeholder="Name">
+          </div>
+          <div>
+              <input id="email-input" placeholder="Email">
+          </div>
+          <div>
+              <button id="add-user-btn">Add</button>
+          </div>
+        </div> -->
+
+        <!-- Display Users -->
+        <!-- <div class="users-column">
+            <div class="column-header">Users:</div>
+            <div id="all-users-anchor"></div>
+        </div> -->
+      </div>
+    </main>
+  </body>
+</html>

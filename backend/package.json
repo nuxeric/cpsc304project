@@ -1,10 +1,10 @@
 {
   "name": "CPSC304RealProject",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "CPSC 304 Project",
+  "main": "index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "ts-node build.ts && tsc",
     "prestart": "npm run build",
     "start": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,9 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "@types/dotenv": "^8.2.0",
+    "@types/fs-extra": "^9.0.3",
     "@types/pino": "^6.3.1",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
     "helmet": "^4.1.1",
     "pino": "^6.6.1",
     "pino-pretty": "^4.2.1"
