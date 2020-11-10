@@ -3,3 +3,4 @@
 **.vscode
 **build
 **npm-debug.log*
+.DS_Store
