@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import logger from "./config/logger";
+import path from 'path';
 import * as http from "http";
 import Database from "./database";
 import MainRouter from "./routes/mainRouter";
@@ -22,6 +23,13 @@ export default class Server {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(helmet());
+
+        this.app.set('views', path.join(__dirname, 'views'));
+        this.app.set('view engine', 'ejs');
+        // this.app.set('view options', {delimiter: '?'});
+
+        // this.app.use(lessMiddleware(path.join(__dirname, 'public')));
+        this.app.use(express.static(path.join(__dirname, 'public')));
 
         this.router = express.Router();
         this.db = new Database("url", "name");
