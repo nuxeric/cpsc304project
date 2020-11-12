@@ -357,19 +357,19 @@ INTO personnel_manager (id, number_of_employees_managed)
 VALUES (1, 8)
 
 INSERT
-INTO personnel_manager  (id, responsibilities)
+INTO personnel_manager  (id, number_of_employees_managed)
 VALUES (2, 2)
 
 INSERT
-INTO personnel_manager  (id, responsibilities)
+INTO personnel_manager  (id, number_of_employees_managed)
 VALUES (5, 10)
 
 INSERT
-INTO personnel_manager  (id, responsibilities)
+INTO personnel_manager  (id, number_of_employees_managed)
 VALUES (6, 20)
 
 INSERT
-INTO personnel_manager  (id, responsibilities)
+INTO personnel_manager  (id, number_of_employees_managed)
 VALUES (10, 50)
 
 /*DIMENSIONS*/
@@ -462,3 +462,32 @@ VALUES (2000, 900, 1100)
 INSERT
 INTO difference_cache (larger, smaller, diff_val)
 VALUES (4000, 50, 3950)
+
+/*INVENTORY_TYPE*/
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('Fidget Spinner', 1, 10, 10)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('Intel Core i7-6700 0.02 Processor', 0.02, 0.02, 0.02)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('B/W striped notebook', 0.5, 26, 39)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('HB Graphite Pencil', 0.5, 0.5, 17)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('Coca Cola Pop', 12, 6, 6)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('TY Bat Mobile Stuffy', 15, 20, 30)
+
+INSERT
+INTO inventory_type (type_name, height, width, length)
+VALUES ('Dixon Ticonderoga Pencil', 0.7, 0.7, 10)
