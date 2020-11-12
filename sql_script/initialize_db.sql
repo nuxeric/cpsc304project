@@ -261,3 +261,204 @@ CREATE TABLE works_in (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+/*INSERT INITIAL DATA*/
+/*PERSONNEL*/
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (1, 1999-01-05, 'Eric', 'Son')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (2, 1942-02-12, 'John', 'Smith')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (3, 1985-06-09, 'Tom', 'Hanks')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (4, 1988-02-01, 'Kim', 'Possible')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (5, 1990-12-12, 'Sarah', 'Lee')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (6, 1993-06-29, 'Martin', 'Short')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (7, 1981-09-26, 'Serena', 'Williams')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (8, 1978-12-30, 'David', 'Peterson')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (9, 1995-02-18, 'Bert', 'Sesame')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (10, 1999-08-11, 'Shaun', 'Donnelly')
+
+INSERT
+INTO personnel (id, birth_date, first_name, last_name)
+VALUES (11, 2000-04-14, 'Peyton', 'Seigo')
+
+/*LINE WORKER*/
+INSERT
+INTO line_worker (id, responsibilities)
+VALUES (1, 'Mop and sweep the floors')
+
+INSERT
+INTO line_worker (id, responsibilities)
+VALUES (2, 'Clean the machines')
+
+INSERT
+INTO line_worker (id, responsibilities)
+VALUES (5, 'Fill hand sanitizers')
+
+INSERT
+INTO line_worker (id, responsibilities)
+VALUES (9, 'Clean inventory boxes')
+
+INSERT
+INTO line_worker (id, responsibilities)
+VALUES (10, 'Move inventory boxes')
+
+/*INVENTORY MANAGER*/
+INSERT
+INTO inventory_manager (id)
+VALUES (3)
+
+INSERT
+INTO inventory_manager (id)
+VALUES (4)
+
+INSERT
+INTO inventory_manager (id)
+VALUES (7)
+
+INSERT
+INTO inventory_manager (id)
+VALUES (8)
+
+INSERT
+INTO inventory_manager (id)
+VALUES (11)
+
+/*PERSONNEL_MANAGER*/
+INSERT
+INTO personnel_manager (id, number_of_employees_managed)
+VALUES (1, 8)
+
+INSERT
+INTO personnel_manager  (id, responsibilities)
+VALUES (2, 2)
+
+INSERT
+INTO personnel_manager  (id, responsibilities)
+VALUES (5, 10)
+
+INSERT
+INTO personnel_manager  (id, responsibilities)
+VALUES (6, 20)
+
+INSERT
+INTO personnel_manager  (id, responsibilities)
+VALUES (10, 50)
+
+/*DIMENSIONS*/
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (1, 10, 10, 100)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (0.02, 0.02, 0.02, 0.000008)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (0.5, 26, 39, 507)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (0.5, 0.5, 17, 4.25)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (12, 6, 6, 432)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (15, 20, 30, 9000)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (0.7, 0.7, 10, 4.9)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (10, 10, 10, 1000)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (10, 10, 5, 500)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (12, 5, 20, 1500)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (30, 30, 30, 27000)
+
+INSERT
+INTO dimensions (height, width, length, volume)
+VALUES (20, 20, 10, 4000)
+
+/*DIFFERENCE CACHE*/
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (100000, 0, 100000)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (500694, 10000, 490,694)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (12839, 5000, 7839)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (20000,  10203, 9797)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (123456, 123456, 0)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (100, 0, 100)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (500, 250, 250)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (1500, 500, 1000)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (2000, 900, 1100)
+
+INSERT
+INTO difference_cache (larger, smaller, diff_val)
+VALUES (4000, 50, 3950)
