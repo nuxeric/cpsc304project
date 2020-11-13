@@ -491,3 +491,99 @@ VALUES ('TY Bat Mobile Stuffy', 15, 20, 30)
 INSERT
 INTO inventory_type (type_name, height, width, length)
 VALUES ('Dixon Ticonderoga Pencil', 0.7, 0.7, 10)
+
+/*INVENTORY*/
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (1,1,'Fidget Spinner',2,2017-06-20)
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (2, 2,'Intel Core i7-6700 Processor', 15, 2017-10-07)
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (3, 3,'HB Graphite Pencil', 5, 2017-12-25)
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (4, 4,'TY Bat Mobile Stuffy', 1, 2017-01-04)
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (5, 5, 'B/W striped notebook', 10, 2016-04-25)
+
+INSERT
+INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (6, 5,'B/W striped notebook', 10, 2016-04-25)
+
+/*TAG*/
+
+INSERT
+INTO tag (name)
+VALUES ('pencil')
+
+INSERT
+INTO tag (name)
+VALUES ('toy')
+
+INSERT
+INTO tag (name)
+VALUES ('soda')
+
+INSERT
+INTO tag (name)
+VALUES ('notebook')
+
+INSERT
+INTO tag (name)
+VALUES ('computer')
+
+INSERT
+INTO tag (name)
+VALUES ('stationary')
+
+
+/*CATEGORIZES*/
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('toy', 'Fidget Spinner')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('computer', 'Intel Core i7-6700 Processor')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('notebook', 'B/W striped notebook')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('stationary', 'B/W striped notebook')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('pencil', 'HB Graphite Pencil')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('stationary', 'HB Graphite Pencil')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('soda', 'Coca Cola Pop')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('toy', 'TY Bat Mobile Stuffy')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('pencil', 'Dixon Ticonderoga Pencil')
+
+INSERT
+INTO categorizes (tag_name, inventory_type_name)
+VALUES ('stationary', 'Dixon Ticonderoga Pencil')
+
