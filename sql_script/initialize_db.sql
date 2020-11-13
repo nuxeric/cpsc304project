@@ -153,7 +153,7 @@ CREATE TABLE categorizes (
 
 CREATE TABLE delivery (
     id INTEGER,
-    date DATE,
+    del_date DATE, /*CHANGED FROM "DATE"*/
     PRIMARY KEY (id)
 );
 
@@ -354,236 +354,99 @@ VALUES (11)
 /*PERSONNEL_MANAGER*/
 INSERT
 INTO personnel_manager (id, number_of_employees_managed)
-VALUES (1, 8)
-
-INSERT
-INTO personnel_manager  (id, number_of_employees_managed)
-VALUES (2, 2)
-
-INSERT
-INTO personnel_manager  (id, number_of_employees_managed)
-VALUES (5, 10)
-
-INSERT
-INTO personnel_manager  (id, number_of_employees_managed)
-VALUES (6, 20)
-
-INSERT
-INTO personnel_manager  (id, number_of_employees_managed)
-VALUES (10, 50)
+VALUES (1, 8),
+    (2, 2),
+    (5, 10),
+    (6, 20),
+    (10, 50);
 
 /*DIMENSIONS*/
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (1, 10, 10, 100)
+INSERT INTO dimensions (height, width, length, volume)
+VALUES (1, 10, 10, 100),
+    (0.02, 0.02, 0.02, 0.000008),
+    (0.5, 26, 39, 507),
+    (0.5, 0.5, 17, 4.25),
+    (12, 6, 6, 432),
+    (15, 20, 30, 9000),
+    (0.7, 0.7, 10, 4.9),
+    (10, 10, 10, 1000),
+    (10, 10, 5, 500),
+    (12, 5, 20, 1500),
+    (30, 30, 30, 27000),
+(20, 20, 10, 4000)
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (0.02, 0.02, 0.02, 0.000008)
+INSERT INTO difference_cache (larger, smaller, diff_val)
+VALUES (100000, 0, 100000),
+    (500694, 10000, 490,694),
+    (12839, 5000, 7839),
+    (20000,  10203, 9797),
+    (123456, 123456, 0),
+    (100, 0, 100),
+    (500, 250, 250),
+    (1500, 500, 1000),
+    (2000, 900, 1100),
+    (4000, 50, 3950);
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (0.5, 26, 39, 507)
+INSERT INTO inventory_type (type_name, height, width, length)
+VALUES ('Fidget Spinner', 1, 10, 10),
+    ('Intel Core i7-6700 0.02 Processor', 0.02, 0.02, 0.02),
+    ('B/W striped notebook', 0.5, 26, 39),
+    ('HB Graphite Pencil', 0.5, 0.5, 17),
+    ('Coca Cola Pop', 12, 6, 6),
+    ('TY Bat Mobile Stuffy', 15, 20, 30),
+    ('Dixon Ticonderoga Pencil', 0.7, 0.7, 10);
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (0.5, 0.5, 17, 4.25)
+INSERT INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
+VALUES (1,1,'Fidget Spinner',2,2017-06-20),
+    (2, 2,'Intel Core i7-6700 Processor', 15, 2017-10-07),
+    (3, 3,'HB Graphite Pencil', 5, 2017-12-25),
+    (4, 4,'TY Bat Mobile Stuffy', 1, 2017-01-04),
+    (5, 5, 'B/W striped notebook', 10, 2016-04-25),
+    (6, 5,'B/W striped notebook', 10, 2016-04-25);
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (12, 6, 6, 432)
+INSERT INTO tag (name)
+VALUES ('pencil'),
+    ('toy'),
+    ('soda'),
+    ('notebook'),
+    ('computer'),
+    ('stationary');
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (15, 20, 30, 9000)
+INSERT INTO categorizes (tag_name, inventory_type_name)
+VALUES ('toy', 'Fidget Spinner'),
+        ('computer', 'Intel Core i7-6700 Processor'),
+        ('notebook', 'B/W striped notebook'),
+        ('stationary', 'B/W striped notebook'),
+        ('pencil', 'HB Graphite Pencil'),
+        ('stationary', 'HB Graphite Pencil'),
+        ('soda', 'Coca Cola Pop'),
+        ('toy', 'TY Bat Mobile Stuffy'),
+        ('pencil', 'Dixon Ticonderoga Pencil'),
+        ('stationary', 'Dixon Ticonderoga Pencil');
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (0.7, 0.7, 10, 4.9)
+INSERT INTO delivery(id, del_date)
+    VALUES (1, 2020-10-23),
+        (2, 2019-07-20),
+        (3, 2018-03-22),
+        (4, 2018-12-05),
+        (5, 2019-09-15),
+        (6, 2019-10-17),
+        (7, 2020-02-18),
+        (8, 2020-07-30),
+        (9, 2020-09-02),
+        (10, 2020-12-19);
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (10, 10, 10, 1000)
+INSERT INTO delivers_inventory
+    VALUES (1, 3),
+        (2, 2),
+        (3, 1),
+        (4, 4),
+        (5, 5),
+        (6, 5);
 
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (10, 10, 5, 500)
-
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (12, 5, 20, 1500)
-
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (30, 30, 30, 27000)
-
-INSERT
-INTO dimensions (height, width, length, volume)
-VALUES (20, 20, 10, 4000)
-
-/*DIFFERENCE CACHE*/
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (100000, 0, 100000)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (500694, 10000, 490,694)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (12839, 5000, 7839)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (20000,  10203, 9797)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (123456, 123456, 0)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (100, 0, 100)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (500, 250, 250)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (1500, 500, 1000)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (2000, 900, 1100)
-
-INSERT
-INTO difference_cache (larger, smaller, diff_val)
-VALUES (4000, 50, 3950)
-
-/*INVENTORY_TYPE*/
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('Fidget Spinner', 1, 10, 10)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('Intel Core i7-6700 0.02 Processor', 0.02, 0.02, 0.02)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('B/W striped notebook', 0.5, 26, 39)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('HB Graphite Pencil', 0.5, 0.5, 17)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('Coca Cola Pop', 12, 6, 6)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('TY Bat Mobile Stuffy', 15, 20, 30)
-
-INSERT
-INTO inventory_type (type_name, height, width, length)
-VALUES ('Dixon Ticonderoga Pencil', 0.7, 0.7, 10)
-
-/*INVENTORY*/
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (1,1,'Fidget Spinner',2,2017-06-20)
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (2, 2,'Intel Core i7-6700 Processor', 15, 2017-10-07)
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (3, 3,'HB Graphite Pencil', 5, 2017-12-25)
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (4, 4,'TY Bat Mobile Stuffy', 1, 2017-01-04)
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (5, 5, 'B/W striped notebook', 10, 2016-04-25)
-
-INSERT
-INTO inventory (serial_num, container_id, type_name, weight, manufacture_date)
-VALUES (6, 5,'B/W striped notebook', 10, 2016-04-25)
-
-/*TAG*/
-
-INSERT
-INTO tag (name)
-VALUES ('pencil')
-
-INSERT
-INTO tag (name)
-VALUES ('toy')
-
-INSERT
-INTO tag (name)
-VALUES ('soda')
-
-INSERT
-INTO tag (name)
-VALUES ('notebook')
-
-INSERT
-INTO tag (name)
-VALUES ('computer')
-
-INSERT
-INTO tag (name)
-VALUES ('stationary')
-
-
-/*CATEGORIZES*/
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('toy', 'Fidget Spinner')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('computer', 'Intel Core i7-6700 Processor')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('notebook', 'B/W striped notebook')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('stationary', 'B/W striped notebook')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('pencil', 'HB Graphite Pencil')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('stationary', 'HB Graphite Pencil')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('soda', 'Coca Cola Pop')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('toy', 'TY Bat Mobile Stuffy')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('pencil', 'Dixon Ticonderoga Pencil')
-
-INSERT
-INTO categorizes (tag_name, inventory_type_name)
-VALUES ('stationary', 'Dixon Ticonderoga Pencil')
-
+INSERT INTO production_facility (id, producer_id, postal_code, street_address)
+VALUES (1, 1, 'V9M4N4', '1 Fairy St'), /*ADDED STREET NUMBERS TO ALL THE ADDRESSES*/
+    (2, 2, 'L9B8K3', '2 Crazy Ave'),
+    (3, 3, 'V9N4K0', '3 Kingsway St'),
+    (4, 4, 'B9K4H2', 'Holloway Cr'), 
+    (5, 5, 'K9S4J2', 'Holloway Cr');
