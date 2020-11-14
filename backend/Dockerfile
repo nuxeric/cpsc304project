@@ -8,6 +8,8 @@ COPY package-lock.json ./
 
 COPY tsconfig.json ./
 
+copy build.ts ./
+
 COPY ./src/ ./src/
 
 # Run the command inside your image filesystem.
