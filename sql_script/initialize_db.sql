@@ -16,7 +16,8 @@ CREATE TABLE line_worker (
         ON UPDATE CASCADE
 );
 
-CREATE TABLE inventory_manager ( id INTEGER,
+CREATE TABLE inventory_manager ( 
+    id INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (id)
         REFERENCES personnel (id)
@@ -187,15 +188,15 @@ CREATE TABLE production_facility (
 );
 
 CREATE TABLE incident (
-id INTEGER,
-producer_id INTEGER NOT NULL, 
-date DATE,
-description TEXT, 
-PRIMARY KEY (id), 
-FOREIGN KEY (producer_id)
-    REFERENCES producer (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+    id INTEGER,
+    producer_id INTEGER NOT NULL, 
+    date DATE,
+    description TEXT, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY (producer_id)
+        REFERENCES producer (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE recipient ( 
@@ -261,7 +262,7 @@ CREATE TABLE works_in (
         ON UPDATE CASCADE
 );
 
-/*INSERT INITIAL DATA*/INSERT INTO personnel (id, birth_date, first_name, last_name)
+/*INSERT INITIAL DATA*/
 INSERT INTO personnel (id, birth_date, first_name, last_name)
 VALUES (1, '1999-01-05', 'Eric', 'Son'),
 	(2, '1942-02-12', 'John', 'Smith'),
