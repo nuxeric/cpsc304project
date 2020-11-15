@@ -21,10 +21,10 @@ export default class PersonnelRoute extends ApiRoute {
         // Index
         this.router.get("/", (req, res) => {
             this.accounts.listPersonnel()
-                .then(personnel => {
-                    res.render('backend/page/personnel/index.ejs', { title: "Personnel", personnel: personnel });
-                })
-                .catch(e => console.error(e.stack));
+            .then(personnel => {
+                res.render('backend/page/personnel/index.ejs', { title: "Personnel", personnel: personnel });
+            })
+            .catch(e => console.error(e.stack));
         });
 
         // New
@@ -34,9 +34,6 @@ export default class PersonnelRoute extends ApiRoute {
 
         // Create
         this.router.post("/", (req, res) => {
-            console.log("Create params:");
-            console.log(req.body);
-
             let firstName = undefined;
             let lastName = undefined;
             let birthDate = undefined;
@@ -63,7 +60,7 @@ export default class PersonnelRoute extends ApiRoute {
                 responsibilities,
                 employeesManaged
             )
-            .then(id => {
+            .then(id => { // TODO (nice to have): put success/error flash message
                 this.accounts.getPersonnel(id)
                 .then(personnel => {
                     res.redirect(`/personnel/${personnel.id}`);
@@ -72,8 +69,6 @@ export default class PersonnelRoute extends ApiRoute {
                     res.redirect('/personnel/new');
                 })
             });
-
-            // TODO (nice to have): put success/error flash message
         });
 
         // Show
@@ -81,26 +76,39 @@ export default class PersonnelRoute extends ApiRoute {
             const id: number = parseInt(req.params.id);
 
             this.accounts.getPersonnel(id)
-                .then(personnel => {
-                    res.render('backend/page/personnel/show.ejs', {
-                        title: `Personnel #${id}`,
-                        personnel: personnel,
-                    });
-                }) // Didn't find Personnel
-                .catch(e => res.render('backend/page/personnel/show.ejs', {
-                    title: e,
-                    personnel: null,
-                }));
+            .then(personnel => {
+                res.render('backend/page/personnel/show.ejs', {
+                    title: `Personnel #${id}`,
+                    personnel: personnel,
+                });
+            }) // Didn't find Personnel
+            .catch(e => res.render('backend/page/personnel/show.ejs', {
+                title: e,
+                personnel: null,
+            }));
         });
 
         // Edit
         this.router.get("/:id/edit", (req, res) => {
-            res.render('backend/page/personnel/edit.ejs', { title: "Edit Personnel", user: req.params });
+            const id: number = parseInt(req.params.id);
+
+            this.accounts.getPersonnel(id)
+            .then(personnel => {
+                res.render('backend/page/personnel/edit.ejs', {
+                    title: `Edit Personnel #${id}`,
+                    personnel: personnel,
+                });
+            }) // Didn't find Personnel
+            .catch(e => res.render('backend/page/personnel/edit.ejs', {
+                title: e,
+                personnel: null,
+            }));
         });
 
         // Update
         this.router.patch("/:id", (req, res) => {
             // ???
+
             res.render('backend/page/personnel/index.ejs', { title: "TODO" });
         });
 

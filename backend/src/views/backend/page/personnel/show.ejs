@@ -13,10 +13,12 @@
         <% if (personnel) {%>
           <h2>Information</h2>
           <ul>
-            <li><b>ID</b>: <%= personnel.id %></li>
             <li><b>First Name</b>: <%= personnel.firstName %></li>
             <li><b>Last Name</b>: <%= personnel.lastName %></li>
             <li><b>Birth Date</b>: <%= personnel.birthDateString() %></li>
+            <% if (personnel.permissions.personnelManager) { %>
+            <li><b>Employees Managed</b>: <%= personnel.employeesManaged %></li>
+            <% } %>
           </ul>
 
           <h2>Permissions</h2>

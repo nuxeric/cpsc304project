@@ -7,6 +7,7 @@ export default class Personnel {
     public permissions: Permissions;
     public birthDate?: Date;
     public responsibilities?: string;
+    public employeesManaged?: number;
 
     constructor(
       id: number,
@@ -14,7 +15,8 @@ export default class Personnel {
       lastName: string = "",
       permissions: Permissions = new Permissions(false, false, false),
       birthDate: Date | undefined = undefined,
-      responsibilities: string | undefined = undefined)
+      responsibilities: string | undefined = undefined,
+      employeesManaged: number | undefined = undefined)
     {
       this.id = id;
       this.firstName = firstName;
@@ -22,6 +24,7 @@ export default class Personnel {
       this.permissions = permissions;
       this.birthDate = birthDate;
       this.responsibilities = responsibilities;
+      this.employeesManaged = employeesManaged;
     }
 
     public birthDateString(): string {

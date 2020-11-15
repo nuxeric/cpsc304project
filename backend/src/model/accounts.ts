@@ -7,7 +7,6 @@ export default class Accounts {
 
     constructor(db: Database) {
       this.db = db;
-      console.log("created accounts instance");
     }
 
     public someQuery(): void {
@@ -36,7 +35,11 @@ export default class Accounts {
                      CASE WHEN EXISTS(SELECT responsibilities FROM line_worker WHERE id = P.id)
                          THEN (SELECT responsibilities FROM line_worker WHERE id = P.id)
                          ELSE ''
-                     END AS responsibilities
+                     END AS responsibilities,
+                     CASE WHEN EXISTS(SELECT * FROM personnel_manager WHERE id = P.id)
+                         THEN (SELECT number_of_employees_managed FROM personnel_manager WHERE id = P.id)
+                         ELSE 0
+                     END AS number_of_employees_managed
            FROM personnel P
            ORDER BY id`,
         values: [],
@@ -48,7 +51,7 @@ export default class Accounts {
         return res.rows.map(p => {
           return new Personnel(p.id, p.first_name, p.last_name,
             { lineWorker: p.line_worker, inventoryManager: p.inventory_manager, personnelManager: p.personnel_manager },
-            p.birth_date, p.responsibilities);
+            p.birth_date, p.responsibilities, p.number_of_employees_managed);
         });
 
       });
@@ -72,10 +75,14 @@ export default class Accounts {
                          THEN true
                          ELSE false
                      END AS personnel_manager,
-                     CASE WHEN EXISTS(SELECT responsibilities FROM line_worker WHERE id = $1)
+                     CASE WHEN EXISTS(SELECT * FROM line_worker WHERE id = $1)
                          THEN (SELECT responsibilities FROM line_worker WHERE id = $1)
                          ELSE ''
-                     END AS responsibilities
+                     END AS responsibilities,
+                     CASE WHEN EXISTS(SELECT * FROM personnel_manager WHERE id = $1)
+                         THEN (SELECT number_of_employees_managed FROM personnel_manager WHERE id = $1)
+                         ELSE 0
+                     END AS number_of_employees_managed
            FROM personnel P
            WHERE id = $1`,
         values: [id],
@@ -87,7 +94,7 @@ export default class Accounts {
           if (p) {
             return new Personnel(p.id, p.first_name, p.last_name,
               { lineWorker: p.line_worker, inventoryManager: p.inventory_manager, personnelManager: p.personnel_manager },
-              p.birth_date, p.responsibilities);
+              p.birth_date, p.responsibilities, p.number_of_employees_managed);
           } else {
             throw new Error(`Personnel #${id} does not exist`)
           }
@@ -197,4 +204,20 @@ export default class Accounts {
 
         return result;
     }
+
+    // public updateUser(
+    //   id: number | undefined,
+    //   firstName: string,
+    //   lastName: string,
+    //   permissions: Permissions
+    //   birthDate: Date | undefined = undefined,
+    //   responsibilities: string | undefined = undefined,
+    //   employeesManaged: number | undefined = undefined): Promise<Number>
+    // {
+    //   return new Promise<number>((resolve) => resolve(id))
+    // }
+
+    // public deleteUser() {
+
+    // }
 }

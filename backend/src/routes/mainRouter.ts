@@ -25,5 +25,9 @@ export default class MainRouter {
         this.router.get("/", (req, res) => {
             res.render('backend/page/index.ejs', { title: 'Warehouse Dashboard'} );
         });
+
+        this.router.get("/about", (req, res) => {
+            res.render('backend/page/about.ejs', { title: 'About this app'} );
+        });
     }
 }
