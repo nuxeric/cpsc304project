@@ -1,10 +1,14 @@
 import path from 'path';
 import ApiRoute from "../apiRoute";
 import Database from "../../database";
+import Accounts from "../../model/accounts";
 
 export default class PersonnelRoute extends ApiRoute {
+    private accounts;
+
     constructor(db: Database) {
         super(db);
+        this.accounts = new Accounts(db);
         this.initializeRoutes();
     }
 
@@ -15,7 +19,11 @@ export default class PersonnelRoute extends ApiRoute {
     private personnelRoute(): void {
         // Index
         this.router.get("/", (req, res) => {
-            res.render('backend/page/personnel/index.ejs', { title: "Personnel" });
+            this.accounts.listPersonnel()
+                .then(personnel => {
+                    res.render('backend/page/personnel/index.ejs', { title: "Personnel", personnel: personnel });
+                })
+                .catch(e => console.error(e.stack));
         });
 
         // New
@@ -31,7 +39,19 @@ export default class PersonnelRoute extends ApiRoute {
 
         // Show
         this.router.get("/:id", (req, res) => {
-            res.render('backend/page/personnel/show.ejs', { title: "Showing Personnel" });
+            const id: number = parseInt(req.params.id);
+
+            this.accounts.getPersonnel(id)
+                .then(personnel => {
+                    res.render('backend/page/personnel/show.ejs', {
+                        title: `Personnel #${id}`,
+                        personnel: personnel,
+                    });
+                }) // Didn't find Personnel
+                .catch(e => res.render('backend/page/personnel/show.ejs', {
+                    title: e,
+                    personnel: null,
+                }));
         });
 
         // Edit

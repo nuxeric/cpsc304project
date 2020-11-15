@@ -9,11 +9,11 @@ import Database from "./database";
 import MainRouter from "./routes/mainRouter";
 
 export default class Server {
+    public db: Database;
     private app: express.Application;
     private port: number;
     private httpServer: http.Server;
     private router: Router;
-    public db: Database;
 
     constructor(port?: number) {
         dotenv.config();
@@ -32,7 +32,8 @@ export default class Server {
         this.app.use(express.static(path.join(__dirname, 'public')));
 
         this.router = express.Router();
-        this.db = new Database("url", "name");
+        this.db = new Database();
+
         this.initServer();
     }
 

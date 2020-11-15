@@ -8,36 +8,42 @@
 
     <main>
       <div class="hero">
-        <h1>Listing Personnel</h1>
+        <h1><%= title %></h1>
 
         <a class="button" href="/personnel/new">New Personnel</a>
 
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Birthdate</th>
+              <th>Birth Date</th>
               <th>LW</th>
               <th>IM</th>
               <th>PM</th>
-              <th></th> <!-- Link column -->
+              <th></th> <!-- Link/action column -->
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Stephen</td>
-              <td>Curry</td>
-              <td>1988-03-14</td>
-              <td><input type="checkbox" disabled checked></td>
-              <td><input type="checkbox" disabled></td>
-              <td><input type="checkbox" disabled checked></td>
-              <td>
-                <span><a href="/personnel/:id/">Show</a></span>
-                <span><a href="/personnel/:id/edit">Edit</a></span>
-                <span><a data-confirm="Are you sure you want to delete this personnel?" data-method="delete" data-to="/personnel/:id" href="/personnel/:id" rel="nofollow">Delete</a></span>
-              </td>
-            </tr>
+            <% if (personnel) {%>
+              <% personnel.forEach(p => { %>
+                <tr>
+                  <td><%= p.id %></td>
+                  <td><%= p.firstName %></td>
+                  <td><%= p.lastName %></td>
+                  <td><%= p.birthDateString() %></td>
+                  <td><% if (p.permissions.lineWorker) { %> ✓ <% } %></td>
+                  <td><% if (p.permissions.inventoryManager) { %> ✓ <% } %></td>
+                  <td><% if (p.permissions.personnelManager) { %> ✓ <% } %></td>
+                  <td>
+                    <span><a href=<%= `/personnel/${p.id}` %>>Show</a></span>
+                    <span><a href=<%= `/personnel/${p.id}/edit` %>>Edit</a></span>
+                    <span><a data-confirm="Are you sure you want to delete this personnel?" data-method="delete" data-to=<%= `/personnel/${p.id}` %> href=<%= `/personnel/${p.id}` %> rel="nofollow">Delete</a></span>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } %>
           </tbody>
         </table>
 

@@ -8,7 +8,8 @@
 
     <main>
       <div class="hero">
-        <h1>New Personnel</h1>
+        <h1><%= title %></h1>
+
         <p>Fill in the fields to create a new personnel.</p>
 
         <a class="button button-outline" href="/personnel">Return to Listing</a>
@@ -33,24 +34,24 @@
               <span>Birthdate</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
-            <input type="date" id="bdate" name="birthdate" placeholder="mm-dd-yyyy" required>
+            <input type="date" id="bdate" name="birthDate" placeholder="mm-dd-yyyy" required>
           </div>
           <fieldset>
             <legend>Permissions</legend>
               <label for="role_1">
-                <input type="checkbox" name="size" id="role_1" value="line_worker">
-                <span>Line operations</span>
+                <input type="checkbox" name="size" id="role_1" value="line_worker" onclick="lineWorkerToggled()">
+                <span>Line worker operations</span>
               </label>
               <label for="role_2">
                 <input type="checkbox" name="size" id="role_2" value="inventory_manager">
-                <span>Inventory</span>
+                <span>Inventory management</span>
               </label>
               <label for="role_3">
                 <input type="checkbox" name="size" id="role_3" value="personnel_manager">
-                <span>Personnel Admin</span>
+                <span>Personnel management</span>
               </label>
           </fieldset>
-          <div class="line-worker-responsibilities-container">
+          <div class="line-worker-responsibilities-container" style="display: none">
             <label for="responsibilities">
               <span>Responsibilites</span>
             </label>
@@ -62,6 +63,7 @@
       </div>
     </main>
 
+    <script src="/scripts/new_personnel.js"></script>
     <%- include('../../layout/foot.ejs') -%>
   </body>
 </html>
