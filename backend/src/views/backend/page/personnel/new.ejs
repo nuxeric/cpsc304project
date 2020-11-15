@@ -14,24 +14,24 @@
 
         <a class="button button-outline" href="/personnel">Return to Listing</a>
 
-        <form name="create_personnel_form" method="POST" action="/personnel/create">
+        <form name="create_personnel_form" method="POST" action="/personnel">
           <div>
             <label for="first">
               <span>First name</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
-            <input type="text" id="first" name="first_name" placeholder="First..." required maxlength="100" pattern="\w+">
+            <input type="text" id="first" name="firstName" placeholder="First..." required maxlength="100" pattern="\w[\w ]*">
           </div>
           <div>
             <label for="last">
               <span>Last name</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
-            <input type="text" id="last" name="last_name" placeholder="Last..." required maxlength="100" pattern="\w+">
+            <input type="text" id="last" name="lastName" placeholder="Last..." required maxlength="100" pattern="\w[\w ]+">
           </div>
           <div>
             <label for="bdate">
-              <span>Birthdate</span>
+              <span>Birt Date</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
             <input type="date" id="bdate" name="birthDate" placeholder="mm-dd-yyyy" required>
@@ -39,15 +39,15 @@
           <fieldset>
             <legend>Permissions</legend>
               <label for="role_1">
-                <input type="checkbox" name="size" id="role_1" value="line_worker" onclick="lineWorkerToggled()">
+                <input type="checkbox" name="lineWorker" id="role_1" value="lineWorker" onclick="lineWorkerToggled()">
                 <span>Line worker operations</span>
               </label>
               <label for="role_2">
-                <input type="checkbox" name="size" id="role_2" value="inventory_manager">
+                <input type="checkbox" name="inventoryManager" id="role_2" value="inventoryManager">
                 <span>Inventory management</span>
               </label>
               <label for="role_3">
-                <input type="checkbox" name="size" id="role_3" value="personnel_manager">
+                <input type="checkbox" name="personnelManager" id="role_3" value="personnelManager">
                 <span>Personnel management</span>
               </label>
           </fieldset>
@@ -55,7 +55,13 @@
             <label for="responsibilities">
               <span>Responsibilites</span>
             </label>
-            <textarea wrap="soft" id="responsibilities" name="line_worker_responsibilities" placeholder="Responsible for..."></textarea>
+            <textarea wrap="soft" id="responsibilities" name="responsibilities" placeholder="Responsible for..."></textarea>
+          </div>
+          <div class="employees-managed-container" style="display: none">
+            <label for="employees-managed">
+              <span>Number of employees managed</span>
+            </label>
+            <input type="text" id="employees-managed" name="employeesManaged" placeholder="Enter a non-negative integer..." pattern="\d+">
           </div>
           <button type="submit" class="button">Create user</button>
           <button type="reset" class="button button-outline">Reset</button>

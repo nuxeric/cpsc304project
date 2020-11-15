@@ -2,6 +2,7 @@ import path from 'path';
 import ApiRoute from "../apiRoute";
 import Database from "../../database";
 import Accounts from "../../model/accounts";
+import Permissions from "../../model/accounts/permissions";
 
 export default class PersonnelRoute extends ApiRoute {
     private accounts;
@@ -33,8 +34,46 @@ export default class PersonnelRoute extends ApiRoute {
 
         // Create
         this.router.post("/", (req, res) => {
-            // ???
-            res.render('backend/page/personnel/index.ejs', { title: "TODO" });
+            console.log("Create params:");
+            console.log(req.body);
+
+            let firstName = undefined;
+            let lastName = undefined;
+            let birthDate = undefined;
+            let lineWorker = undefined;
+            let inventoryManager = undefined;
+            let personnelManager = undefined;
+            let responsibilities = undefined;
+            let employeesManaged = undefined;
+
+            ({ firstName, lastName, birthDate, lineWorker, inventoryManager,
+                personnelManager, responsibilities, employeesManaged }
+                = req.body);
+
+            this.accounts.createPersonnel(
+                undefined,
+                firstName,
+                lastName,
+                new Permissions(
+                    lineWorker = lineWorker,
+                    inventoryManager = inventoryManager,
+                    personnelManager = personnelManager
+                ),
+                new Date(birthDate),
+                responsibilities,
+                employeesManaged
+            )
+            .then(id => {
+                this.accounts.getPersonnel(id)
+                .then(personnel => {
+                    res.redirect(`/personnel/${personnel.id}`);
+                })
+                .catch(error => {
+                    res.redirect('/personnel/new');
+                })
+            });
+
+            // TODO (nice to have): put success/error flash message
         });
 
         // Show

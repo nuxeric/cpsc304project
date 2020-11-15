@@ -1,5 +1,6 @@
 import Database from "../database";
 import Personnel from "./accounts/personnel";
+import Permissions from "./accounts/permissions";
 
 export default class Accounts {
     protected db: Database;
@@ -58,7 +59,6 @@ export default class Accounts {
     // A single personnel
     public getPersonnel(id: number): Promise<Personnel> {
       const query = {
-        // text: 'SELECT * FROM personnel WHERE id = $1',
         text:
           `SELECT *, CASE WHEN EXISTS(SELECT id FROM line_worker WHERE id = $1)
                          THEN true
@@ -115,4 +115,86 @@ export default class Accounts {
       return result;
     }
 
+    public nextPersonnelID(): Promise<number> {
+      const query = {
+        text: 'SELECT MAX(id) FROM personnel',
+        values: [],
+      };
+
+      let result = this.db.client.query(query)
+        .then(res => {
+          const q = res.rows[0];
+          if (q) {
+            return q.max + 1;
+          } else {
+            throw new Error(`Could not get next max ID from personnel table`)
+          }
+        });
+
+      return result;
+    }
+
+    // TODO: IDs are not autoincrementing, so we have to manually find the next
+    // available ID. Would be great to not have to worry about that!
+    public createPersonnel(
+      id: number | undefined,
+      firstName: string,
+      lastName: string,
+      permissions: Permissions = new Permissions(false, false, false),
+      birthDate: Date | undefined = undefined,
+      responsibilities: string | undefined = undefined,
+      employeesManaged: number | undefined = undefined): Promise<number>
+    {
+      let result =
+        this.nextPersonnelID()
+        .then(nextID => {
+          if (id == undefined) {
+            id = nextID;
+          }
+          const query = {
+            text: `INSERT INTO personnel (id, birth_date, first_name, last_name)
+                   VALUES ($1, $2, $3, $4);`,
+            values: [id, birthDate, firstName, lastName],
+          };
+          return this.db.client.query(query)
+        })
+        .then(res => {
+          if (!permissions.lineWorker) {
+            return new Promise((resolve, reject) => resolve());
+          }
+          const query = {
+            text: `INSERT INTO line_worker (id, responsibilities)
+                   VALUES ($1, $2);`,
+            values: [id, responsibilities],
+          };
+          return this.db.client.query(query)
+        })
+        .then(res => {
+          if (!permissions.inventoryManager) {
+            return new Promise((resolve, reject) => resolve());
+          }
+          const query = {
+            text: `INSERT INTO inventory_manager (id)
+                   VALUES ($1);`,
+            values: [id],
+          };
+          return this.db.client.query(query)
+        })
+        .then(res => {
+          if (!permissions.personnelManager) {
+            return new Promise((resolve, reject) => resolve());
+          }
+          const query = {
+            text: `INSERT INTO personnel_manager (id, number_of_employees_managed)
+                   VALUES ($1, $2);`,
+            values: [id, employeesManaged],
+          };
+          return this.db.client.query(query)
+        })
+        .then(res => {
+          return new Promise<number>((resolve) => resolve(id));
+        });
+
+        return result;
+    }
 }
