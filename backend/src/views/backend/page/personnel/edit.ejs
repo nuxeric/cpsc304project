@@ -14,7 +14,11 @@
 
         <a class="button button-outline" href="/personnel">Return to Listing</a>
 
-        <form name="create_personnel_form" method="PATCH" action="/personnel">
+        <hr>
+
+        <% if (personnel) { %>
+        <form name="create_personnel_form" method="post" action=<%= `/personnel/${personnel.id}` %>>
+          <input name="_method" type="hidden" value="put">
           <div>
             <label for="first">
               <span>First name</span>
@@ -31,7 +35,7 @@
           </div>
           <div>
             <label for="bdate">
-              <span>Birt Date</span>
+              <span>Birth Date</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
             <input value=<%= `${personnel.birthDateString()}` %> type="date" id="bdate" name="birthDate" placeholder="mm-dd-yyyy" required>
@@ -65,6 +69,8 @@
           </div>
           <button type="submit" class="button">Update personnel</button>
         </form>
+        <% } %>
+
       </div>
     </main>
 

@@ -34,7 +34,10 @@ export default class Personnel {
       return `${ye}-${mo}-${da}`;
     }
 
-    public static birthDateString(date: string): string {
+    public static birthDateString(date: string | undefined): string {
+      if (date == undefined) {
+        return "";
+      }
       const d = new Date(date);
       const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
       const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d);

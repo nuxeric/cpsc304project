@@ -9,13 +9,6 @@ export default class Accounts {
       this.db = db;
     }
 
-    public someQuery(): void {
-      this.db.client
-        .query('SELECT NOW() as now')
-        .then(res => console.log(res.rows[0]))
-        .catch(e => console.error(e.stack))
-    }
-
     // Multiple personnel
     public listPersonnel(): Promise<Array<Personnel>> {
       const query = {
@@ -205,19 +198,112 @@ export default class Accounts {
         return result;
     }
 
-    // public updateUser(
-    //   id: number | undefined,
-    //   firstName: string,
-    //   lastName: string,
-    //   permissions: Permissions
-    //   birthDate: Date | undefined = undefined,
-    //   responsibilities: string | undefined = undefined,
-    //   employeesManaged: number | undefined = undefined): Promise<Number>
-    // {
-    //   return new Promise<number>((resolve) => resolve(id))
-    // }
+    public updatePersonnel(
+      id: number,
+      firstName: string,
+      lastName: string,
+      permissions: Permissions,
+      birthDate: Date | undefined = undefined,
+      responsibilities: string | undefined = undefined,
+      employeesManaged: number | undefined = undefined): Promise<Number>
+    {
+      const updatePersonnelQuery = {
+        text: `UPDATE personnel
+               SET first_name = $2,
+                   last_name = $3,
+                   birth_date = $4
+               WHERE id = $1;`,
+        values: [id, firstName, lastName, birthDate],
+      };
 
-    // public deleteUser() {
+      let result = this.db.client.query(updatePersonnelQuery)
+        .then(res => {
+          if (permissions.lineWorker) {
+            const updateLineWorkerQuery = {
+              text: `INSERT INTO line_worker VALUES ($1, $2)
+                     ON CONFLICT (id) DO UPDATE SET responsibilities = $2;`,
+              values: [id, responsibilities],
+            };
+            return this.db.client.query(updateLineWorkerQuery);
+          } else {
+            const removeLineWorkerQuery = {
+              text: `DELETE FROM line_worker WHERE ID = $1`,
+              values: [id]
+            };
+            return this.db.client.query(removeLineWorkerQuery);
+          }
+        })
+        .then(res => {
+          if (permissions.inventoryManager) {
+            const updateInventoryManagerQuery = {
+              text: `INSERT INTO inventory_manager VALUES ($1)
+                     ON CONFLICT (id) DO NOTHING;`,
+              values: [id],
+            };
+            return this.db.client.query(updateInventoryManagerQuery);
+          } else {
+            const removeLineWorkerQuery = {
+              text: `DELETE FROM inventory_manager WHERE ID = $1`,
+              values: [id]
+            };
+            return this.db.client.query(removeLineWorkerQuery);
+          }
+        })
+        .then(res => {
+          if (permissions.personnelManager) {
+            const updatePersonnelManagerQuery = {
+              text: `INSERT INTO personnel_manager VALUES ($1, $2)
+                     ON CONFLICT (id) DO UPDATE SET number_of_employees_managed = $2;`,
+              values: [id, employeesManaged],
+            };
+            return this.db.client.query(updatePersonnelManagerQuery);
+          } else {
+            const removePersonnelManagerQuery = {
+              text: `DELETE FROM personnel_manager WHERE ID = $1`,
+              values: [id]
+            };
+            return this.db.client.query(removePersonnelManagerQuery);
+          }
+        })
+        .then(res => {
+          return new Promise<number>((resolve) => resolve(id));
+        });
 
-    // }
+        return result;
+    }
+
+    public deletePersonnel(id: number): Promise<boolean> {
+      const removeLineWorkerQuery = {
+        text: `DELETE FROM line_worker WHERE ID = $1`,
+        values: [id]
+      };
+
+      let result = this.db.client.query(removeLineWorkerQuery)
+        .then(res => {
+          const removeInventoryManagerQuery = {
+            text: `DELETE FROM inventory_manager WHERE ID = $1`,
+            values: [id]
+          };
+          return this.db.client.query(removeInventoryManagerQuery);
+        })
+        .then(res => {
+          const removePersonnelManagerQuery = {
+            text: `DELETE FROM personnel_manager WHERE ID = $1`,
+            values: [id]
+          };
+          return this.db.client.query(removePersonnelManagerQuery);
+        })
+        .then(res => {
+          const removePersonnelQuery = {
+            text: `DELETE FROM personnel WHERE ID = $1`,
+            values: [id]
+          };
+          return this.db.client.query(removePersonnelQuery);
+        })
+        .then(res => {
+          return new Promise<boolean>((resolve) => resolve(true));
+        });
+
+        return result;
+    }
 }
