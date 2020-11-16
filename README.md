@@ -29,3 +29,11 @@ npm install
 npm run build
 npm start
 ```
+
+## Connecting to the database with `psql`
+
+The debug credentials are postgres/postgres.
+
+```bash
+psql -h localhost -p 5432 -U postgres
+```
