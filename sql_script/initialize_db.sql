@@ -292,7 +292,7 @@ VALUES (1, 8),
     (5, 10),
     (6, 20),
     (10, 50);
-  
+
 INSERT INTO dimensions (height, width, length, volume)
 VALUES (1, 10, 10, 100),
     (0.02, 0.02, 0.02, 0.000008),

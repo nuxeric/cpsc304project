@@ -1,5 +1,3 @@
-/*Deletions__________________________*/
-
 /*Remove an employee (del_id) from the personnel table, along with the inventory_manager, personnel_manager, or line_worker tables, as applicable.*/
 
 DELETE
@@ -14,21 +12,19 @@ DELETE
 FROM line_worker
 WHERE id = del_id;
 
-	#all three of these tables cascade on delete
-	#we do not have a relationship such as line_worker is_managed_by personnel_manager 
-
-/*To delete a Warehouse (del_warehouse_id): Delete all of its Inventory, all its Container(s), then the Warehouse*/
+/*To delete a Warehouse (del_warehouse_id): Delete all of its Inventory, all its Container(s), then the Warehouse
+NOTE: warehouse to be deleted represented by id = "del_id"*/
 
 DELETE 
 FROM inventory I
-WHERE I.container_id = SELECT DISTINCT container_id
+WHERE I.container_id IN (SELECT DISTINCT C.id
 					 FROM storage_container C
-					 WHERE C.warehouse_id = del_warehouse_id
-
+					 WHERE C.warehouse_id = del_id);
+   
 DELETE
-FROM storage_container C
-WHERE C.warehouse_id = del_warehouse_id
+FROM storage_container
+WHERE warehouse_id = del_id;
 
 DELETE 
-FROM warehouse W
-WHERE W.warehouse_id = del_warehouse_id
+FROM warehouse 
+WHERE id = del_id;
