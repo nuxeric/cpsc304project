@@ -24,7 +24,7 @@ docker-compose up -d
 Docker Compose will do this for you. No need to run this manually.
 
 ```bash
-cd backend
+cd web
 npm install
 npm run build
 npm start
