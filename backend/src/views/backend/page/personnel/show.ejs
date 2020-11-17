@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../../layout/head.ejs') -%>
+  </head>
+  <body>
+    <%- include('../../layout/header.ejs') -%>
+
+    <main>
+      <div class="hero">
+        <h1><%= title %></h1>
+
+        <% if (personnel) {%>
+          <h2>Information</h2>
+          <ul>
+            <li><b>First Name</b>: <%= personnel.firstName %></li>
+            <li><b>Last Name</b>: <%= personnel.lastName %></li>
+            <li><b>Birth Date</b>: <%= personnel.birthDateString() %></li>
+            <% if (personnel.permissions.personnelManager) { %>
+            <li><b>Employees Managed</b>: <%= personnel.employeesManaged %></li>
+            <% } %>
+          </ul>
+
+          <h2>Permissions</h2>
+          <table style="text-align: center;">
+            <thead>
+              <tr>
+                <th>Line Worker</th>
+                <th>Inventory Manager</th>
+                <th>Personnel Manager</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><% if (personnel.permissions.lineWorker) { %> ✓ <% } %></td>
+                <td><% if (personnel.permissions.inventoryManager) { %> ✓ <% } %></td>
+                <td><% if (personnel.permissions.personnelManager) { %> ✓ <% } %></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <% if (personnel.permissions.lineWorker) { %>
+            <h2>Line worker responsibilities</h2>
+            <% if (personnel.responsibilities != '') { %>
+              <p><%= personnel.responsibilities %></p>
+            <% } else { %>
+              <p><i>This personnel does not have any recorded responsibilites.</i></p>
+            <% } %>
+          <% } %>
+        <% } %>
+
+        <a class="button" href=<%= `/personnel/${personnel.id}/edit` %>>Edit</a>
+        <a class="button" data-confirm="Are you sure you want to delete this personnel?" data-method="delete" data-to=<%= `/personnel/${personnel.id}` %> href=<%= `/personnel/${personnel.id}` %> rel="nofollow">Delete</a>
+        <a class="button button-outline" href="/personnel">Return to Listing</a>
+    </main>
+
+    <%- include('../../layout/foot.ejs') -%>
+  </body>
+</html>

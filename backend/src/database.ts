@@ -2,25 +2,22 @@ import logger from "./config/logger";
 import {Client} from "pg";
 
 export default class Database {
-    public url: string;
-    private dbName: string;
-    private client;
+    public client;
 
-    constructor(url: string, name: string) {
-        this.url = url;
-        this.dbName = name;
+    constructor() {
         this.client = new Client();
         this.setUpConnection();
-        logger.info("database");
     }
 
     private async setUpConnection(): Promise<void> {
+        logger.info("Connecting to database...");
+
         const promise = this.client.connect();
         promise.then(() => {
-            logger.info("The database has connected successfully")
+            logger.info("Connected to database successfully!")
         }).catch((error) => {
             logger.error(error)
-            logger.error("your database has not connected successfully")
+            logger.error("Failed to connect to the database!")
         });
     }
 }
