@@ -8,7 +8,7 @@ COPY package-lock.json ./
 
 COPY tsconfig.json ./
 
-copy build.ts ./
+COPY build.ts ./
 
 COPY ./src/ ./src/
 
