@@ -21,7 +21,7 @@ docker-compose up -d
 
 ## Manually running the server
 
-Docker Compose will do this for you. No need to run this manually.
+Docker Compose will do this for you. No need to run this manually. Although doing `npm install` will help your code editor understand the code and give you tips, so that's still a good idea to do!
 
 ```bash
 cd web
