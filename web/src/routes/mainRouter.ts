@@ -23,11 +23,11 @@ export default class MainRouter {
 
     private viewRoute(): void {
         this.router.get("/", (req, res) => {
-            res.render('backend/page/index.ejs', { title: 'Warehouse Dashboard'} );
+            res.render('web/page/index.ejs', { title: 'Warehouse Dashboard'} );
         });
 
         this.router.get("/about", (req, res) => {
-            res.render('backend/page/about.ejs', { title: 'About this app'} );
+            res.render('web/page/about.ejs', { title: 'About this app'} );
         });
     }
 }
