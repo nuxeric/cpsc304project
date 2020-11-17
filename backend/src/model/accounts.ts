@@ -96,25 +96,6 @@ export default class Accounts {
       return result;
     }
 
-    public getResponsibilities(id: number): Promise<string> {
-      const query = {
-        text: 'SELECT responsibilities FROM line_worker WHERE id = $1',
-        values: [id],
-      };
-
-      let result = this.db.client.query(query)
-        .then(res => {
-          const q = res.rows[0];
-          if (q) {
-            return q.responsibilities;
-          } else {
-            throw new Error(`Personnel #${id} does not have line worker permissions`)
-          }
-        });
-
-      return result;
-    }
-
     public nextPersonnelID(): Promise<number> {
       const query = {
         text: 'SELECT MAX(id) FROM personnel',
