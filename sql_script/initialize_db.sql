@@ -52,7 +52,7 @@ CREATE TABLE region(
 CREATE TABLE difference_cache( 
     larger DOUBLE PRECISION,
     smaller DOUBLE PRECISION,
-    difference DOUBLE PRECISION, 
+    difference DOUBLE PRECISION NOT NULL, 
     PRIMARY KEY (larger, smaller)
 );
 
