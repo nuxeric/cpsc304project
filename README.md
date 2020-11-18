@@ -37,3 +37,26 @@ The debug credentials are postgres/postgres.
 ```bash
 psql -h localhost -p 5432 -U postgres
 ```
+
+Connect to the project's database:
+
+```txt
+postgres=# \l
+                                  List of databases
+    Name     |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-------------+----------+----------+------------+------------+-----------------------
+ cpsc304_dev | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+...
+
+postgres=# \c cpsc304_dev
+psql (12.4 (Ubuntu 12.4-0ubuntu0.20.04.1), server 12.2 (Debian 12.2-2.pgdg100+1))
+You are now connected to database "cpsc304_dev" as user "postgres".
+
+cpsc304_dev=#
+```
+
+To load the starter data, run the `initialize_db.sql` script:
+
+```txt
+cpsc304_dev=# \i ./sql_script/initialize_db.sql
+```
