@@ -49,6 +49,9 @@ export default class PersonnelRoute extends ApiRoute {
                 personnelManager, responsibilities, employeesManaged }
                 = req.body);
 
+            // Leaving the field empty sends the arg as an empty string
+            employeesManaged = (employeesManaged === '') ? undefined : parseInt(employeesManaged);
+
             this.accounts.createPersonnel(
                 undefined,
                 firstName,
@@ -149,7 +152,7 @@ export default class PersonnelRoute extends ApiRoute {
             = req.body);
 
         // Leaving the field empty sends the arg as an empty string
-        employeesManaged = (employeesManaged == '') ? undefined : employeesManaged;
+        employeesManaged = (employeesManaged === '') ? undefined : parseInt(employeesManaged);
 
         this.accounts.updatePersonnel(
             id,

@@ -10,7 +10,7 @@ export default class Accounts {
     }
 
     // Multiple personnel
-    public listPersonnel(): Promise<Array<Personnel>> {
+    public async listPersonnel(): Promise<Array<Personnel>> {
       const query = {
         text:
           `SELECT *, CASE WHEN EXISTS(SELECT id FROM line_worker WHERE id = P.id)
@@ -38,22 +38,21 @@ export default class Accounts {
         values: [],
       };
 
-      let result = this.db.client.query(query)
-      .then(res => {
+      try {
+        const result = await this.db.client.query(query)
 
-        return res.rows.map(p => {
+        return result.rows.map(p => {
           return new Personnel(p.id, p.first_name, p.last_name,
             { lineWorker: p.line_worker, inventoryManager: p.inventory_manager, personnelManager: p.personnel_manager },
             p.birth_date, p.responsibilities, p.number_of_employees_managed);
         });
-
-      });
-
-      return result;
+      } catch (e) {
+        throw new Error('Could not get list of Personnel');
+      }
     }
 
     // A single personnel
-    public getPersonnel(id: number): Promise<Personnel> {
+    public async getPersonnel(id: number): Promise<Personnel> {
       const query = {
         text:
           `SELECT *, CASE WHEN EXISTS(SELECT id FROM line_worker WHERE id = $1)
@@ -81,43 +80,45 @@ export default class Accounts {
         values: [id],
       };
 
-      let result = this.db.client.query(query)
-        .then(res => {
-          const p = res.rows[0];
-          if (p) {
-            return new Personnel(p.id, p.first_name, p.last_name,
-              { lineWorker: p.line_worker, inventoryManager: p.inventory_manager, personnelManager: p.personnel_manager },
-              p.birth_date, p.responsibilities, p.number_of_employees_managed);
-          } else {
-            throw new Error(`Personnel #${id} does not exist`)
-          }
-        });
+      try {
+        const result = await this.db.client.query(query);
+        const p = result.rows[0];
 
-      return result;
+        if (p) {
+          return new Personnel(p.id, p.first_name, p.last_name,
+            { lineWorker: p.line_worker, inventoryManager: p.inventory_manager, personnelManager: p.personnel_manager },
+            p.birth_date, p.responsibilities, p.number_of_employees_managed);
+        } else {
+          throw new Error(`Personnel #${id} does not exist`);
+        }
+      } catch (e) {
+        throw new Error(`Could not get Personnel #${id}`);
+      }
     }
 
-    public nextPersonnelID(): Promise<number> {
+    public async nextPersonnelID(): Promise<number> {
       const query = {
         text: 'SELECT MAX(id) FROM personnel',
         values: [],
       };
 
-      let result = this.db.client.query(query)
-        .then(res => {
-          const q = res.rows[0];
-          if (q) {
-            return q.max + 1;
-          } else {
-            throw new Error(`Could not get next max ID from personnel table`)
-          }
-        });
+      try {
+        const result = await this.db.client.query(query);
+        const q = result.rows[0];
 
-      return result;
+        if (q) {
+          return q.max + 1;
+        } else {
+          throw new Error(`Could not get next max ID from personnel table`);
+        }
+      } catch (e) {
+        throw new Error(`Could not get next max ID from personnel table`);
+      }
     }
 
     // TODO: IDs are not autoincrementing, so we have to manually find the next
     // available ID. Would be great to not have to worry about that!
-    public createPersonnel(
+    public async createPersonnel(
       id: number | undefined,
       firstName: string,
       lastName: string,
@@ -126,60 +127,61 @@ export default class Accounts {
       responsibilities: string | undefined = undefined,
       employeesManaged: number | undefined = undefined): Promise<number>
     {
-      let result =
-        this.nextPersonnelID()
-        .then(nextID => {
-          if (id == undefined) {
-            id = nextID;
-          }
-          const query = {
-            text: `INSERT INTO personnel (id, birth_date, first_name, last_name)
-                   VALUES ($1, $2, $3, $4);`,
-            values: [id, birthDate, firstName, lastName],
-          };
-          return this.db.client.query(query)
-        })
-        .then(res => {
-          if (!permissions.lineWorker) {
-            return new Promise((resolve, reject) => resolve());
-          }
-          const query = {
+      if (id == undefined) {
+        id = await this.nextPersonnelID();
+      }
+
+      try {
+        await this.db.client.query('BEGIN');
+
+        const personnelQuery = {
+          text: `INSERT INTO personnel (id, birth_date, first_name, last_name)
+                VALUES ($1, $2, $3, $4);`,
+          values: [id, birthDate, firstName, lastName],
+        };
+        await this.db.client.query(personnelQuery);
+
+        if (permissions.lineWorker) {
+          const lineWorkerQuery = {
             text: `INSERT INTO line_worker (id, responsibilities)
-                   VALUES ($1, $2);`,
+                  VALUES ($1, $2);`,
             values: [id, responsibilities],
           };
-          return this.db.client.query(query)
-        })
-        .then(res => {
-          if (!permissions.inventoryManager) {
-            return new Promise((resolve, reject) => resolve());
-          }
-          const query = {
+          await this.db.client.query(lineWorkerQuery);
+        }
+
+        if (permissions.inventoryManager) {
+          const inventoryManagerQuery = {
             text: `INSERT INTO inventory_manager (id)
-                   VALUES ($1);`,
+                  VALUES ($1);`,
             values: [id],
           };
-          return this.db.client.query(query)
-        })
-        .then(res => {
-          if (!permissions.personnelManager) {
-            return new Promise((resolve, reject) => resolve());
+          await this.db.client.query(inventoryManagerQuery);
+        }
+
+        if (permissions.personnelManager) {
+          if (employeesManaged == undefined) {
+            employeesManaged = 0;
           }
-          const query = {
+          const personnelManagerQuery = {
             text: `INSERT INTO personnel_manager (id, number_of_employees_managed)
-                   VALUES ($1, $2);`,
+                  VALUES ($1, $2);`,
             values: [id, employeesManaged],
           };
-          return this.db.client.query(query)
-        })
-        .then(res => {
-          return new Promise<number>((resolve) => resolve(id));
-        });
+          await this.db.client.query(personnelManagerQuery);
+        }
 
-        return result;
+        await this.db.client.query('COMMIT');
+
+        return id;
+      } catch (e) {
+        console.log("Error while creating a Personnel: ", e);
+        await this.db.client.query('ROLLBACK');
+        throw e;
+      }
     }
 
-    public updatePersonnel(
+    public async updatePersonnel(
       id: number,
       firstName: string,
       lastName: string,
@@ -188,103 +190,108 @@ export default class Accounts {
       responsibilities: string | undefined = undefined,
       employeesManaged: number | undefined = undefined): Promise<Number>
     {
-      const updatePersonnelQuery = {
-        text: `UPDATE personnel
-               SET first_name = $2,
-                   last_name = $3,
-                   birth_date = $4
-               WHERE id = $1;`,
-        values: [id, firstName, lastName, birthDate],
-      };
+      try {
+        await this.db.client.query('BEGIN');
 
-      let result = this.db.client.query(updatePersonnelQuery)
-        .then(res => {
-          if (permissions.lineWorker) {
-            const updateLineWorkerQuery = {
-              text: `INSERT INTO line_worker VALUES ($1, $2)
-                     ON CONFLICT (id) DO UPDATE SET responsibilities = $2;`,
-              values: [id, responsibilities],
-            };
-            return this.db.client.query(updateLineWorkerQuery);
-          } else {
-            const removeLineWorkerQuery = {
-              text: `DELETE FROM line_worker WHERE ID = $1`,
-              values: [id]
-            };
-            return this.db.client.query(removeLineWorkerQuery);
-          }
-        })
-        .then(res => {
-          if (permissions.inventoryManager) {
-            const updateInventoryManagerQuery = {
-              text: `INSERT INTO inventory_manager VALUES ($1)
-                     ON CONFLICT (id) DO NOTHING;`,
-              values: [id],
-            };
-            return this.db.client.query(updateInventoryManagerQuery);
-          } else {
-            const removeLineWorkerQuery = {
-              text: `DELETE FROM inventory_manager WHERE ID = $1`,
-              values: [id]
-            };
-            return this.db.client.query(removeLineWorkerQuery);
-          }
-        })
-        .then(res => {
-          if (permissions.personnelManager) {
-            const updatePersonnelManagerQuery = {
-              text: `INSERT INTO personnel_manager VALUES ($1, $2)
-                     ON CONFLICT (id) DO UPDATE SET number_of_employees_managed = $2;`,
-              values: [id, employeesManaged],
-            };
-            return this.db.client.query(updatePersonnelManagerQuery);
-          } else {
-            const removePersonnelManagerQuery = {
-              text: `DELETE FROM personnel_manager WHERE ID = $1`,
-              values: [id]
-            };
-            return this.db.client.query(removePersonnelManagerQuery);
-          }
-        })
-        .then(res => {
-          return new Promise<number>((resolve) => resolve(id));
-        });
+        const updatePersonnelQuery = {
+          text: `UPDATE personnel
+                SET first_name = $2,
+                    last_name = $3,
+                    birth_date = $4
+                WHERE id = $1;`,
+          values: [id, firstName, lastName, birthDate],
+        };
+        await this.db.client.query(updatePersonnelQuery);
 
-        return result;
-    }
+        if (permissions.lineWorker) {
+          const updateLineWorkerQuery = {
+            text: `INSERT INTO line_worker VALUES ($1, $2)
+                   ON CONFLICT (id) DO UPDATE SET responsibilities = $2;`,
+            values: [id, responsibilities],
+          };
+          await this.db.client.query(updateLineWorkerQuery);
+        } else {
+          const removeLineWorkerQuery = {
+            text: `DELETE FROM line_worker WHERE ID = $1`,
+            values: [id]
+          };
+          await this.db.client.query(removeLineWorkerQuery);
+        }
 
-    public deletePersonnel(id: number): Promise<boolean> {
-      const removeLineWorkerQuery = {
-        text: `DELETE FROM line_worker WHERE ID = $1`,
-        values: [id]
-      };
-
-      let result = this.db.client.query(removeLineWorkerQuery)
-        .then(res => {
-          const removeInventoryManagerQuery = {
+        if (permissions.inventoryManager) {
+          const updateInventoryManagerQuery = {
+            text: `INSERT INTO inventory_manager VALUES ($1)
+                   ON CONFLICT (id) DO NOTHING;`,
+            values: [id],
+          };
+          await this.db.client.query(updateInventoryManagerQuery);
+        } else {
+          const removeLineWorkerQuery = {
             text: `DELETE FROM inventory_manager WHERE ID = $1`,
             values: [id]
           };
-          return this.db.client.query(removeInventoryManagerQuery);
-        })
-        .then(res => {
+          await this.db.client.query(removeLineWorkerQuery);
+        }
+
+        if (permissions.personnelManager) {
+          const updatePersonnelManagerQuery = {
+            text: `INSERT INTO personnel_manager VALUES ($1, $2)
+                   ON CONFLICT (id) DO UPDATE SET number_of_employees_managed = $2;`,
+            values: [id, employeesManaged],
+          };
+          await this.db.client.query(updatePersonnelManagerQuery);
+        } else {
           const removePersonnelManagerQuery = {
             text: `DELETE FROM personnel_manager WHERE ID = $1`,
             values: [id]
           };
-          return this.db.client.query(removePersonnelManagerQuery);
-        })
-        .then(res => {
-          const removePersonnelQuery = {
-            text: `DELETE FROM personnel WHERE ID = $1`,
-            values: [id]
-          };
-          return this.db.client.query(removePersonnelQuery);
-        })
-        .then(res => {
-          return new Promise<boolean>((resolve) => resolve(true));
-        });
+          await this.db.client.query(removePersonnelManagerQuery);
+        }
 
-        return result;
+        await this.db.client.query('COMMIT');
+
+        return id;
+      } catch (e) {
+        console.log(`Error while updating Personnel #${id}: `, e);
+        await this.db.client.query('ROLLBACK');
+        throw e;
+      }
+    }
+
+    public async deletePersonnel(id: number): Promise<boolean> {
+      try {
+        await this.db.client.query('BEGIN');
+
+        const removeLineWorkerQuery = {
+          text: `DELETE FROM line_worker WHERE ID = $1`,
+          values: [id]
+        };
+
+        const removeInventoryManagerQuery = {
+          text: `DELETE FROM inventory_manager WHERE ID = $1`,
+          values: [id]
+        };
+        await this.db.client.query(removeInventoryManagerQuery);
+
+        const removePersonnelManagerQuery = {
+          text: `DELETE FROM personnel_manager WHERE ID = $1`,
+          values: [id]
+        };
+        await this.db.client.query(removePersonnelManagerQuery);
+
+        const removePersonnelQuery = {
+          text: `DELETE FROM personnel WHERE ID = $1`,
+          values: [id]
+        };
+        await this.db.client.query(removePersonnelQuery);
+
+        await this.db.client.query('COMMIT');
+
+        return true;
+      } catch (e) {
+        console.log(`Error while deleting Personnel #${id}: `, e);
+        await this.db.client.query('ROLLBACK');
+        throw e;
+      }
     }
 }
