@@ -5,11 +5,13 @@
     </head>
     <body>
         <%- include('../../layout/header.ejs') -%>
-        
+
         <main>
             <div class="hero">
               <h1><%= title %></h1>
-      
+
+              <p>Listing the Personnel who work in every warehouse.</p>
+
               <table>
                 <thead>
                   <tr>
@@ -18,10 +20,10 @@
                     <th>Last Name</th>
                   </tr>
                 </thead>
-                
+
                 <tbody>
-                    <% if (div_result) {%>
-                      <% div_result.forEach(p => { %>
+                    <% if (personnel) {%>
+                      <% personnel.forEach(p => { %>
                         <tr>
                           <td><%= p.id %></td>
                           <td><%= p.firstName %></td>
@@ -32,7 +34,22 @@
                   </tbody>
 
               </table>
-      
+
+              <p>This is the result of the following query:</p>
+              <pre>
+  SELECT DISTINCT id, first_name, last_name
+  FROM personnel P
+  WHERE NOT EXISTS (
+    SELECT DISTINCT W.id
+    FROM warehouse W
+    EXCEPT (
+      SELECT DISTINCT N.warehouse_id
+      FROM works_in N
+      WHERE N.pid = P.id
+    )
+  );
+              </pre>
+
             </div>
           </main>
 
