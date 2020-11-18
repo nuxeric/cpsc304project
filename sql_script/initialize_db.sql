@@ -1,25 +1,25 @@
-DROP TABLE personnel;
-DROP TABLE line_worker;
-DROP TABLE inventory_manager;
-DROP TABLE personnel_manager;
-DROP TABLE dimensions;
-DROP TABLE region;
-DROP TABLE difference_cache;
-DROP TABLE warehouse;
-DROP TABLE storage_container;
-DROP TABLE producer;
-DROP TABLE inventory_type;
-DROP TABLE inventory;
-DROP TABLE tag;
-DROP TABLE categorize;
-DROP TABLE delivery;
-DROP TABLE delivers_inventory;
-DROP TABLE production_facility;
-DROP TABLE incident;
-DROP TABLE recipient;
-DROP TABLE dispatches;
-DROP TABLE receives;
-DROP TABLE works_in;
+DROP TABLE personnel CASCADE;
+DROP TABLE line_worker CASCADE;
+DROP TABLE inventory_manager CASCADE;
+DROP TABLE personnel_manager CASCADE;
+DROP TABLE dimensions CASCADE;
+DROP TABLE region CASCADE;
+DROP TABLE difference_cache CASCADE;
+DROP TABLE warehouse CASCADE;
+DROP TABLE storage_container CASCADE;
+DROP TABLE producer CASCADE;
+DROP TABLE inventory_type CASCADE;
+DROP TABLE inventory CASCADE;
+DROP TABLE tag CASCADE;
+DROP TABLE categorizes CASCADE;
+DROP TABLE delivery CASCADE;
+DROP TABLE delivers_inventory CASCADE;
+DROP TABLE production_facility CASCADE;
+DROP TABLE incident CASCADE;
+DROP TABLE recipient CASCADE;
+DROP TABLE dispatches CASCADE;
+DROP TABLE receives CASCADE;
+DROP TABLE works_in CASCADE;
 
 CREATE TABLE personnel ( 
     id INTEGER, 
