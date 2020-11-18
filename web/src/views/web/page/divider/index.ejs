@@ -36,7 +36,7 @@
               </table>
 
               <p>This is the result of the following query:</p>
-              <pre>
+  <pre>
   SELECT DISTINCT id, first_name, last_name
   FROM personnel P
   WHERE NOT EXISTS (
@@ -47,8 +47,7 @@
       FROM works_in N
       WHERE N.pid = P.id
     )
-  );
-              </pre>
+  );</pre>
 
             </div>
           </main>
