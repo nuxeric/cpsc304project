@@ -15,9 +15,8 @@ export default class DividerRoute extends ApiRoute {
     private initializeRoutes(): void {
         this.router.get("/", (req, res) => {
             this.accounts.personnelWhoWorkInEveryWarehouse()
-            .then(div_result => {
-                console.log("div_result: ", div_result);
-                res.render('web/page/divider/index.ejs', { title: "Division Query", personnel: div_result });
+            .then(personnel => {
+                res.render('web/page/divider/index.ejs', { title: "Division Query", personnel: personnel });
             })
             .catch(e => console.error(e.stack));
         });
