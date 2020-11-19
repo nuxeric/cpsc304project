@@ -1,3 +1,26 @@
+DROP TABLE personnel CASCADE;
+DROP TABLE line_worker CASCADE;
+DROP TABLE inventory_manager CASCADE;
+DROP TABLE personnel_manager CASCADE;
+DROP TABLE dimensions CASCADE;
+DROP TABLE region CASCADE;
+DROP TABLE difference_cache CASCADE;
+DROP TABLE warehouse CASCADE;
+DROP TABLE storage_container CASCADE;
+DROP TABLE producer CASCADE;
+DROP TABLE inventory_type CASCADE;
+DROP TABLE inventory CASCADE;
+DROP TABLE tag CASCADE;
+DROP TABLE categorizes CASCADE;
+DROP TABLE delivery CASCADE;
+DROP TABLE delivers_inventory CASCADE;
+DROP TABLE production_facility CASCADE;
+DROP TABLE incident CASCADE;
+DROP TABLE recipient CASCADE;
+DROP TABLE dispatches CASCADE;
+DROP TABLE receives CASCADE;
+DROP TABLE works_in CASCADE;
+
 CREATE TABLE personnel ( 
     id INTEGER, 
     birth_date DATE, 
@@ -449,7 +472,21 @@ VALUES(6, 1, 1),
 
 INSERT INTO works_in (pid, warehouse_id)
 VALUES(1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
 	(2, 1),
     (3, 1),
     (4, 3),
-    (5, 5);
+    (5, 5),
+    (10, 1),
+    (10, 2),
+    (10, 3),
+    (10, 4),
+    (10, 5),
+    (11, 1),
+    (11, 2),
+    (11, 3),
+    (11, 4),
+    (11, 5);

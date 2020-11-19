@@ -294,4 +294,30 @@ export default class Accounts {
         throw e;
       }
     }
+
+    public personnelWhoWorkInEveryWarehouse(): Promise<Array<Personnel>> {
+      const query = {
+        text:
+          `SELECT DISTINCT id, first_name, last_name
+           FROM personnel P
+           WHERE NOT EXISTS (
+             SELECT DISTINCT W.id
+             FROM warehouse W
+             EXCEPT (
+               SELECT DISTINCT N.warehouse_id
+               FROM works_in N
+               WHERE N.pid = P.id
+             )
+           );`,
+        values: [],
+      };
+
+      let result = this.db.client.query(query)
+      .then(res => {
+        return res.rows.map(p => {
+          return new Personnel(p.id, p.first_name, p.last_name);
+        });
+      });
+      return result;
+    }
 }
