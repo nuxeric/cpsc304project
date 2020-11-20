@@ -25,5 +25,4 @@ export default class Inventory {
         const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.manufacture_date);
         return `${ye}-${mo}-${da}`;
     }
-
 }

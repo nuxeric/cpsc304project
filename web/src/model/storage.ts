@@ -103,4 +103,25 @@ export default class Storage {
             throw new Error('Failed to query number of containers per warehouse');
         }
     }
+
+    public async aggregationHavingOnWarehouse(num_emp: number): Promise<Array<Warehouse>> {
+        const query = {
+            text:
+                `SELECT w.id
+                    FROM warehouse W, personnel P, works_in N
+                    WHERE W.id = N.warehouse_id AND P.id = N.pid
+                    GROUP BY W.id
+                    HAVING COUNT (*) >= $1;`,
+            values: [num_emp],
+        };
+
+        try {
+            const result = await this.db.client.query(query)
+            return result.rows.map(w => {
+                return new Warehouse(w.id, 0, 0, "", "");
+            });
+        } catch (e) {
+            throw new Error('Could not get list of Warehouses');
+        }
+    }
 }

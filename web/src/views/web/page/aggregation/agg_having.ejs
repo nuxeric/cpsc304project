@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../../layout/head.ejs') -%>
+    </head>
+    <body>
+        <%- include('../../layout/header.ejs') -%>
+        <main>
+            <div class="hero">
+              <h1><%= title %></h1>
+
+              <table>
+                  <thead>
+                    <tr>
+                      <th>Warehouse ID</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                      <% if (warehouse) {%>
+                        <% warehouse.forEach(w => { %>
+                          <tr>
+                            <td><%= w.id %></td>
+                          </tr>
+                        <% }); %>
+                      <% } %>
+                    </tbody>
+                  <table>
+              <p>This is the result of the following query:</p>
+    <pre>
+        SELECT W.id
+        FROM warehouse W, personnel P, works_in N
+        WHERE W.id = N.warehouse_id AND P.id = N.pid
+        GROUP BY W.id
+        HAVING COUNT (*) >= user_input_MIN_value;
+    </pre>
+                <a class="button" href="/aggregation/index">New Query</a><br />
+            </div>
+        </main>
+
+        <%- include('../../layout/foot.ejs') -%>
+    </body>
+</html>

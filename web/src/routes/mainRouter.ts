@@ -5,6 +5,7 @@ import PersonnelRoute from "./personnel/personnelRoute";
 import DividerRoute from "./divider/dividerRoute";
 import InventoryRoute from "./inventory/inventoryRoute";
 import WarehouseRoute from "./warehouse/warehouseRoute";
+import AggregationRoute from "./aggregation/aggregationRoute";
 
 export default class MainRouter {
     public router: Router;
@@ -13,6 +14,7 @@ export default class MainRouter {
     private dividerRoute: DividerRoute;
     private inventoryRoute: InventoryRoute;
     private warehouseRoute: WarehouseRoute;
+    private aggregationRoute: AggregationRoute;
 
     constructor(db: Database) {
         this.router = express.Router();
@@ -21,6 +23,7 @@ export default class MainRouter {
         this.dividerRoute = new DividerRoute(db);
         this.inventoryRoute = new InventoryRoute(db);
         this.warehouseRoute = new WarehouseRoute(db);
+        this.aggregationRoute = new AggregationRoute(db);
         this.initializeRoutes();
     }
 
@@ -31,6 +34,7 @@ export default class MainRouter {
         this.router.use("/divider", this.dividerRoute.router);
         this.router.use("/inventory", this.inventoryRoute.router);
         this.router.use("/warehouse", this.warehouseRoute.router);
+        this.router.use("/aggregation", this.aggregationRoute.router);
     }
 
     private viewRoute(): void {

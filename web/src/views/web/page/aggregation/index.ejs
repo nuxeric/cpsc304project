@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../../layout/head.ejs') -%>
+    </head>
+    <body>
+        <%- include('../../layout/header.ejs') -%>
+        
+        <main>
+            <div class="hero">
+                <h1><%= title %></h1>
+
+            <form name="aggregation_having_warehouse" method="POST" action="/aggregation/agg_having">
+              <div>
+                <label for="minimum_personnel_num">
+                  <span>Minimum Number of Personnel in Warehouses</span>
+                  <abbr title="required" aria-label="required">*</abbr>
+                </label>
+                <input type="number" id="minimum_personnel_num" name="minimum_personnel_num" min = "0">
+              </div>
+              <button type="submit" class="button">Query</button>
+              <p>Returns a list of IDs for Warehouses with at least the input number of Personnel.</p>
+            </form>
+          </div>
+        </main>
+        <%- include('../../layout/foot.ejs') -%>
+    </body>
+</html>
