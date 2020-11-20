@@ -32,6 +32,18 @@ export default class InventoryRoute extends ApiRoute {
             })
             .catch(e => console.error(e.stack));
         });
+
+        this.router.get("/nested-aggregation-with-group-by", (req, res) => {
+            this.storage.inventoryTypesWithSmallerThanAverageVolume()
+            .then(inventoryTypes => {
+                res.render('web/page/inventory/nested-aggregation-with-group-by.ejs',
+                    {
+                        title: "Nested Aggregation with Group By Query",
+                        inventoryTypes: inventoryTypes
+                    });
+            })
+            .catch(e => console.error(e.stack));
+        });
     }
 
 }
