@@ -405,7 +405,11 @@ VALUES (1,1,'Fidget Spinner',2,'2017-06-20'),
     (3, 3,'HB Graphite Pencil', 5, '2017-12-25'),
     (4, 4,'TY Bat Mobile Stuffy', 1, '2017-01-04'),
     (5, 5, 'B/W striped notebook', 10, '2016-04-25'),
-    (6, 5,'B/W striped notebook', 10, '2016-04-25');
+    (6, 5,'B/W striped notebook', 10, '2016-04-25'),
+    (7, 5,'TY Bat Mobile Stuffy', 1, '2016-04-22'),
+    (8, 5,'TY Bat Mobile Stuffy', 1, '2016-03-15'),
+    (9, 5,'Intel Core i7-6700 0.02 Processor', 15, '2016-02-11'),
+    (10, 5,'Intel Core i7-6700 0.02 Processor', 15, '2016-09-20');
 
 INSERT INTO tag (name)
 VALUES ('pencil'),
