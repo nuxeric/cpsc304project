@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <%- include('../../layout/head.ejs') -%>
-</head>
-<body>
-<%- include('../../layout/header.ejs') -%>
+  </head>
+  <body>
+    <%- include('../../layout/header.ejs') -%>
 
-<main>
-    <div class="hero">
+    <main>
+      <div class="hero">
         <h1><%= title %></h1>
 
-        <a class="button" href="/inventory/hard-coded-select">Select SerialNum, ContainerID, TypeName and Weight from Inventory</a>
+        <a class="button" href="/inventory/projection">Select SerialNum, ContainerID, TypeName and Weight from Inventory</a>
+      </div>
+    </main>
 
-<!--        <button type="button" name="hardcodedselect" class="button" >-->
-<!--            Select SerialNum, ContainerID, TypeName and Weight from Inventory-->
-<!--        </button>-->
-
-    </div>
-</main>
-
-<%- include('../../layout/foot.ejs') -%>
-</body>
+    <%- include('../../layout/foot.ejs') -%>
+  </body>
 </html>

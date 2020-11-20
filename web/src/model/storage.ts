@@ -1,15 +1,14 @@
 import Database from "../database";
-import Personnel from "./accounts/personnel";
-import Inventory from "./inventory";
+import Inventory from "./storage/inventory";
 
-export default class InventoryLogic {
+export default class Storage {
     protected db: Database;
 
     constructor(db: Database) {
         this.db = db;
     }
 
-    public async selectInventoryHardCode() {
+    public async selectInventoryAndProject() {
         const query = {
             text:
                 `SELECT serial_num, container_id, type_name, weight FROM inventory`,

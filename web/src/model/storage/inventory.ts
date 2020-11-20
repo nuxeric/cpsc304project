@@ -1,5 +1,3 @@
-
-
 export default class Inventory {
     public serial_num: number;
     public container_id: number;

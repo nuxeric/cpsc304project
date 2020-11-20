@@ -1,14 +1,13 @@
 import ApiRoute from "../apiRoute";
 import Database from "../../database";
-import InventoryLogic from "../../model/inventoryLogic";
-import Inventory from "../../model/inventory";
+import Storage from "../../model/storage";
 
 export default class InventoryRoute extends ApiRoute {
-    private inventoryLogic: InventoryLogic;
+    private storage: Storage;
 
     constructor(db: Database) {
         super(db);
-        this.inventoryLogic = new InventoryLogic(db);
+        this.storage = new Storage(db);
         this.initializeRoutes();
     }
 
@@ -19,20 +18,19 @@ export default class InventoryRoute extends ApiRoute {
     private inventoryRoute(): void {
         // Index
         this.router.get("/", (req, res) => {
-            res.render('web/page/inventory/index.ejs', {title: "InventoryLogic"});
+            res.render('web/page/inventory/index.ejs', {title: "Inventory"});
         });
 
-        this.router.get("/hard-coded-select", (req, res) => {
-            const inventoryListPromise: Promise<Inventory[]> = this.inventoryLogic.selectInventoryHardCode();
-            inventoryListPromise
-                .then(inventoryList => {
-                    res.render('web/page/inventory/hard-coded-select.ejs',
-                        {
-                            title: "Inventory",
-                            inventoryList: inventoryList
-                        });
-                })
-                .catch(e => console.error(e.stack));
+        this.router.get("/projection", (req, res) => {
+            this.storage.selectInventoryAndProject()
+            .then(inventoryList => {
+                res.render('web/page/inventory/projection.ejs',
+                    {
+                        title: "Projection Query",
+                        inventoryList: inventoryList
+                    });
+            })
+            .catch(e => console.error(e.stack));
         });
     }
 
