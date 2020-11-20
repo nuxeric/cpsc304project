@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include('../../layout/head.ejs') -%>
+</head>
+<body>
+  <%- include('../../layout/header.ejs') -%>
+
+  <main>
+    <div class="hero">
+      <h1><%= title %></h1>
+
+      <p>Listing the number of containers held in each warehouse.</p>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Warehouse ID</th>
+          <th>Total Volume</th>
+          <th>Occupied Volume</th>
+          <th>Street Address</th>
+          <th>Postal Code</th>
+          <th>Container Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (result) {%>
+          <% result.forEach(r => { %>
+            <tr>
+              <td><%= r.warehouse.id %></td>
+              <td><%= r.warehouse.total_volume %></td>
+              <td><%= r.warehouse.occupied_volume %></td>
+              <td><%= r.warehouse.streetAddress %></td>
+              <td><%= r.warehouse.postalCode %></td>
+              <td><%= r.containerCount %></td>
+            </tr>
+          <% }); %>
+        <% } %>
+        </tbody>
+      </table>
+
+      <p>This is the result of the following query:</p>
+      <pre>
+  SELECT W.*, COUNT(*) as container_count
+  FROM storage_container S, warehouse W
+  WHERE W.id = S.warehouse_id
+  GROUP BY W.id;</pre>
+
+    </div>
+  </main>
+
+  <%- include('../../layout/foot.ejs') -%>
+</body>
+</html>

@@ -33,6 +33,18 @@ export default class InventoryRoute extends ApiRoute {
             .catch(e => console.error(e.stack));
         });
 
+        this.router.get("/warehouse-container-counts", (req, res) => {
+            this.storage.warehouseContainerCounts()
+            .then(result => {
+                res.render('web/page/inventory/warehouse-container-counts.ejs',
+                    {
+                        title: "Aggregation with Group By Query",
+                        result: result
+                    });
+            })
+            .catch(e => console.error(e.stack));
+        });
+
         this.router.get("/nested-aggregation-with-group-by", (req, res) => {
             this.storage.inventoryTypesWithSmallerThanAverageVolume()
             .then(inventoryTypes => {
