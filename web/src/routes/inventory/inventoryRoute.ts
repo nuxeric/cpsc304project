@@ -3,7 +3,7 @@ import Database from "../../database";
 import InventoryLogic from "../../model/inventoryLogic";
 import Inventory from "../../model/inventory";
 
-export default class inventoryRoute extends ApiRoute {
+export default class InventoryRoute extends ApiRoute {
     private inventoryLogic: InventoryLogic;
 
     constructor(db: Database) {
