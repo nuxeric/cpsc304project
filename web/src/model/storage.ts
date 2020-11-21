@@ -26,7 +26,7 @@ export default class Storage {
         }
     }
 
-    public async joinInventoryAndStorageContainerOnWarehouseID(warehouseID: number): Promise<Inventory[]> {
+    public async joinInventoryAndStorageContainerOnWarehouseID(warehouseID: number): Promise<Array<Inventory>> {
         const query = {
             text:
                 `SELECT I.serial_num, I.container_id, I.type_name, I.weight, I.manufacture_date
@@ -84,10 +84,10 @@ export default class Storage {
     public async warehouseContainerCounts(): Promise<Array<Object>> {
         const query = {
             text:
-                `SELECT W.*, COUNT(*) as container_count
-                FROM storage_container S, warehouse W
-                WHERE W.id = S.warehouse_id
-                GROUP BY W.id`,
+                `SELECT W.id, W.total_volume, W.occupied_volume, W.street_address, W.postal_code, COUNT(*) as container_count
+                 FROM storage_container S, warehouse W
+                 WHERE W.id = S.warehouse_id
+                 GROUP BY W.id`,
             values: [],
         };
 
@@ -95,7 +95,13 @@ export default class Storage {
             const result = await this.db.client.query(query)
             return result.rows.map(w => {
                 return {
-                    warehouse: new Warehouse(w.id, w.total_volume, w.occupied_volume, w.street_address, w.postal_code),
+                    warehouse: new Warehouse(
+                        w.id,
+                        w.total_volume,
+                        w.occupied_volume,
+                        w.street_address,
+                        w.postal_code
+                    ),
                     containerCount: w.container_count
                 };
             });
@@ -104,21 +110,35 @@ export default class Storage {
         }
     }
 
-    public async aggregationHavingOnWarehouse(num_emp: number): Promise<Array<Warehouse>> {
+    /**
+      * Returns a list of objects, each with keys:
+      * - warehouse (a Warehouse object)
+      * - containerCount (the number of containers in that warehouse)
+      */
+    public async aggregationHavingOnWarehouse(num_emp: number): Promise<Array<Object>> {
         const query = {
             text:
-                `SELECT w.id
-                    FROM warehouse W, personnel P, works_in N
-                    WHERE W.id = N.warehouse_id AND P.id = N.pid
-                    GROUP BY W.id
-                    HAVING COUNT (*) >= $1;`,
+                `SELECT W.id, W.total_volume, W.occupied_volume, W.street_address, W.postal_code, COUNT(*) as number_of_personnel
+                 FROM warehouse W, personnel P, works_in N
+                 WHERE W.id = N.warehouse_id AND P.id = N.pid
+                 GROUP BY W.id
+                 HAVING COUNT (*) >= $1;`,
             values: [num_emp],
         };
 
         try {
             const result = await this.db.client.query(query)
-            return result.rows.map(w => {
-                return new Warehouse(w.id, 0, 0, "", "");
+            return result.rows.map(res => {
+                return {
+                    warehouse: new Warehouse(
+                        res.id,
+                        res.total_volume,
+                        res.occupied_volume,
+                        res.street_address,
+                        res.postal_code
+                    ),
+                    numberOfPersonnel: res.number_of_personnel
+                };
             });
         } catch (e) {
             throw new Error('Could not get list of Warehouses');

@@ -13,27 +13,38 @@
                   <thead>
                     <tr>
                       <th>Warehouse ID</th>
+                      <th>Total Volume</th>
+                      <th>Occupied Volume</th>
+                      <th>Street Address</th>
+                      <th>Postal Code</th>
+                      <th>Number of Personnel</th>
                     </tr>
                   </thead>
 
                   <tbody>
                       <% if (warehouse) {%>
-                        <% warehouse.forEach(w => { %>
+                        <% warehouse.forEach(r => { %>
                           <tr>
-                            <td><%= w.id %></td>
+                            <td><%= r.warehouse.id %></td>
+                            <td><%= r.warehouse.total_volume %></td>
+                            <td><%= r.warehouse.occupied_volume %></td>
+                            <td><%= r.warehouse.streetAddress %></td>
+                            <td><%= r.warehouse.postalCode %></td>
+                            <td><%= r.numberOfPersonnel %></td>
                           </tr>
                         <% }); %>
                       <% } %>
-                    </tbody>
-                  <table>
-              <p>This is the result of the following query:</p>
-    <pre>
-        SELECT W.id
-        FROM warehouse W, personnel P, works_in N
-        WHERE W.id = N.warehouse_id AND P.id = N.pid
-        GROUP BY W.id
-        HAVING COUNT (*) >= user_input_MIN_value;
-    </pre>
+                  </tbody>
+                <table>
+
+                <p>This is the result of the following query:</p>
+                <pre>
+  SELECT W.id, W.total_volume, W.occupied_volume, W.street_address, W.postal_code, COUNT(*) as number_of_personnel
+  FROM warehouse W, personnel P, works_in N
+  WHERE W.id = N.warehouse_id AND P.id = N.pid
+  GROUP BY W.id
+  HAVING COUNT (*) >= &lt;given minimum number of personnel&gt;;</pre>
+
                 <a class="button" href="/aggregation/index">New Query</a><br />
             </div>
         </main>
