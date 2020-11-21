@@ -22,30 +22,49 @@ export default class Storage {
                 return new Inventory(i.serial_num, i.container_id, i.type_name, i.weight, undefined);
             });
         } catch (e) {
-            throw new Error('Could not perform projection on Inventory');
+            throw new Error('Could not get list of Inventory');
+        }
+    }
+
+    public async joinInventoryAndStorageContainerOnWarehouseID(warehouseID: number): Promise<Inventory[]> {
+        const query = {
+            text:
+                `SELECT I.serial_num, I.container_id, I.type_name, I.weight, I.manufacture_date
+                 FROM inventory I, storage_container S
+                 WHERE S.warehouse_id = $1 AND I.container_id = S.id`,
+            values: [warehouseID],
+        };
+
+        try {
+            const result = await this.db.client.query(query)
+            return result.rows.map(i => {
+                return new Inventory(i.serial_num, i.container_id, i.type_name, i.weight, i.manufacture_date);
+            });
+        } catch (e) {
+            throw new Error('Could not get list of Inventory');
         }
     }
 
     /**
-     * Returns a list of objects, each with the keys:
-     * - typeName
-     * - count
-     * - volume
-     */
+      * Returns a list of objects, each with the keys:
+      * - typeName
+      * - count
+      * - volume
+      */
     public async inventoryTypesWithSmallerThanAverageVolume(): Promise<Array<Object>> {
-        const query = {
-            text:
-                `SELECT IT.type_name, COUNT(*) as count, (IT.height * IT.width * IT.length) as volume
-                 FROM inventory_type IT, inventory I
-                 WHERE I.type_name = IT.type_name
-                 GROUP BY IT.type_name
-                 HAVING (IT.height * IT.width * IT.length) < (
-                   SELECT AVG(height * width * length)
-                   FROM inventory_type
-                 )
-                 ORDER BY count DESC, volume ASC;`,
-            values: [],
-        };
+      const query = {
+          text:
+              `SELECT IT.type_name, COUNT(*) as count, (IT.height * IT.width * IT.length) as volume
+               FROM inventory_type IT, inventory I
+               WHERE I.type_name = IT.type_name
+               GROUP BY IT.type_name
+               HAVING (IT.height * IT.width * IT.length) < (
+                 SELECT AVG(height * width * length)
+                 FROM inventory_type
+               )
+               ORDER BY count DESC, volume ASC;`,
+          values: [],
+      };
 
         try {
             const result = await this.db.client.query(query)
@@ -58,17 +77,17 @@ export default class Storage {
     }
 
     /**
-     * Returns a list of objects, each with keys:
-     * - warehouse (a Warehouse object)
-     * - containerCount (the number of containers in that warehouse)
-     */
+      * Returns a list of objects, each with keys:
+      * - warehouse (a Warehouse object)
+      * - containerCount (the number of containers in that warehouse)
+      */
     public async warehouseContainerCounts(): Promise<Array<Object>> {
         const query = {
             text:
                 `SELECT W.*, COUNT(*) as container_count
-                 FROM storage_container S, warehouse W
-                 WHERE W.id = S.warehouse_id
-                 GROUP BY W.id`,
+                FROM storage_container S, warehouse W
+                WHERE W.id = S.warehouse_id
+                GROUP BY W.id`,
             values: [],
         };
 

@@ -1,6 +1,7 @@
 import ApiRoute from "../apiRoute";
 import Database from "../../database";
 import Storage from "../../model/storage";
+import logger from "../../config/logger";
 
 export default class InventoryRoute extends ApiRoute {
     private storage: Storage;
@@ -55,6 +56,22 @@ export default class InventoryRoute extends ApiRoute {
                     });
             })
             .catch(e => console.error(e.stack));
+        });
+
+        this.router.post("/join", (req, res) => {
+            let warehouseID = undefined;
+            ({ warehouseID} = req.body);
+            if (warehouseID == undefined) {
+                res.status(400).send();
+            }
+            this.storage.joinInventoryAndStorageContainerOnWarehouseID(warehouseID)
+                .then(inventoryList => {
+                    res.render("web/page/inventory/join.ejs", {
+                        title: "Join Query",
+                        inventoryList: inventoryList
+                    })
+                })
+                .catch( e => console.error(e.stack))
         });
     }
 
