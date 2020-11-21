@@ -262,23 +262,6 @@ export default class Accounts {
       try {
         await this.db.client.query('BEGIN');
 
-        const removeLineWorkerQuery = {
-          text: `DELETE FROM line_worker WHERE ID = $1`,
-          values: [id]
-        };
-
-        const removeInventoryManagerQuery = {
-          text: `DELETE FROM inventory_manager WHERE ID = $1`,
-          values: [id]
-        };
-        await this.db.client.query(removeInventoryManagerQuery);
-
-        const removePersonnelManagerQuery = {
-          text: `DELETE FROM personnel_manager WHERE ID = $1`,
-          values: [id]
-        };
-        await this.db.client.query(removePersonnelManagerQuery);
-
         const removePersonnelQuery = {
           text: `DELETE FROM personnel WHERE ID = $1`,
           values: [id]

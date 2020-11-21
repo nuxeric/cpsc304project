@@ -47,10 +47,11 @@
               <p><i>This personnel does not have any recorded responsibilites.</i></p>
             <% } %>
           <% } %>
-        <% } %>
 
-        <a class="button" href=<%= `/personnel/${personnel.id}/edit` %>>Edit</a>
-        <a class="button" data-confirm="Are you sure you want to delete this personnel?" data-method="delete" data-to=<%= `/personnel/${personnel.id}` %> href=<%= `/personnel/${personnel.id}` %> rel="nofollow">Delete</a>
+          <a class="button" href=<%= `/personnel/${personnel.id}/edit` %>>Edit</a>
+          <a class="button" data-confirm="Are you sure you want to delete this personnel?" data-method="delete" data-to=<%= `/personnel/${personnel.id}` %> href=<%= `/personnel/${personnel.id}` %> rel="nofollow">Delete</a>
+          <% } %>
+
         <a class="button button-outline" href="/personnel">Return to Listing</a>
     </main>
 
