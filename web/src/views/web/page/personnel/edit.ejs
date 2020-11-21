@@ -65,7 +65,7 @@
             <label for="employees-managed">
               <span>Number of employees managed</span>
             </label>
-            <input value=<%= `${personnel.employeesManaged}` %> type="text" id="employees-managed" name="employeesManaged" placeholder="Enter a non-negative integer..." pattern="\d+">
+            <input value=<%= `${personnel.employeesManaged}` %> type="number" id="employees-managed" name="employeesManaged" placeholder="Enter a non-negative integer..." pattern="\d+">
           </div>
           <button type="submit" class="button">Update personnel</button>
         </form>

@@ -1,16 +1,16 @@
 export default class Warehouse {
-    public id: number;
-    public total_volume: number;
-    public occupied_volume: number;
-    public streetAddress: string;
-    public postalCode: string;
+    public id:              number;
+    public total_volume:    number | undefined;
+    public occupied_volume: number | undefined;
+    public streetAddress:   string | undefined;
+    public postalCode:      string | undefined;
 
     constructor(
-      id: number,
-      total_volume: number = 0,
-      occupied_volume: number = 0,
-      streetAddress: string = "",
-      postalCode: string = "")
+      id:              number,
+      total_volume:    number | undefined = undefined,
+      occupied_volume: number | undefined = undefined,
+      streetAddress:   string | undefined = undefined,
+      postalCode:      string | undefined = undefined)
     {
       this.id = id;
       this.total_volume = total_volume;

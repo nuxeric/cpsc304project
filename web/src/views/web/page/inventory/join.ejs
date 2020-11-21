@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%- include('../../layout/head.ejs') -%>
+  <%- include('../../layout/head.ejs') -%>
 </head>
 <body>
-<%- include('../../layout/header.ejs') -%>
+  <%- include('../../layout/header.ejs') -%>
 
-<main>
+  <main>
     <div class="hero">
-        <h1><%= title %></h1>
-        <table>
-            <thead>
-            <tr>
-                <th>Serial Num</th>
-                <th>Container ID</th>
-                <th>Type Name</th>
-                <th>Weight</th>
-                <th>Manufacture Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% if (inventoryList) {%>
-                <% inventoryList.forEach(i => { %>
-                    <tr>
-                        <td><%= i.serial_num %></td>
-                        <td><%= i.container_id %></td>
-                        <td><%= i.type_name %></td>
-                        <td><%= i.weight %></td>
-                        <td><%= i.getDateString() %></td>
-                    </tr>
-                <% }); %>
-            <% } %>
-            </tbody>
-        </table>
+      <h1><%= title %></h1>
 
-        <p>This is the result of the following query:</p>
-        <pre>
+      <table>
+        <thead>
+          <tr>
+            <th>Serial Num</th>
+            <th>Container ID</th>
+            <th>Type Name</th>
+            <th>Weight</th>
+            <th>Manufacture Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (inventoryList) {%>
+          <% inventoryList.forEach(i => { %>
+          <tr>
+            <td><%= i.serial_num %></td>
+            <td><%= i.container_id %></td>
+            <td><%= i.type_name %></td>
+            <td><%= i.weight %></td>
+            <td><%= i.getDateString() %></td>
+          </tr>
+          <% }); %>
+          <% } %>
+        </tbody>
+      </table>
+
+      <p>This is the result of the following query:</p>
+      <pre>
   SELECT I.serial_num, I.container_id, I.type_name, I.weight, I.manufacture_date
   FROM inventory I, storage_container S
-  WHERE S.warehouse_id = <given warehouse_id>
-  AND I.container_id = S.id</pre>
+  WHERE S.warehouse_id = &lt;given warehouse_id&gt;
+  AND I.container_id = S.id;</pre>
     </div>
-</main>
+  </main>
 
-<%- include('../../layout/foot.ejs') -%>
+  <%- include('../../layout/foot.ejs') -%>
 </body>
 </html>
