@@ -26,6 +26,26 @@ export default class Storage {
         }
     }
 
+    public async selectInventoryWith(minWeight: number, container: number): Promise<Array<Inventory>> {
+        const query = {
+            text:
+                `SELECT *
+                 FROM inventory
+                 WHERE weight >= $1 AND
+                       container_id = $2`,
+            values: [minWeight, container],
+        };
+
+        try {
+            const result = await this.db.client.query(query)
+            return result.rows.map(i => {
+                return new Inventory(i.serial_num, i.container_id, i.type_name, i.weight, i.manufacture_date);
+            });
+        } catch (e) {
+            throw new Error('Could not get list of Inventory filtered by a minimum weight');
+        }
+    }
+
     public async joinInventoryAndStorageContainerOnWarehouseID(warehouseID: number): Promise<Array<Inventory>> {
         const query = {
             text:

@@ -34,6 +34,25 @@ export default class InventoryRoute extends ApiRoute {
             .catch(e => console.error(e.stack));
         });
 
+        this.router.post("/min-weight-from-container", (req, res) => {
+            let minWeight: number = NaN;
+            let containerID: number = NaN;
+            ({ minWeight, containerID } = req.body);
+            if (minWeight == NaN || containerID == NaN) {
+                res.status(400).send();
+            }
+
+            this.storage.selectInventoryWith(minWeight, containerID)
+            .then(inventoryList => {
+                res.render('web/page/inventory/min-weight-from-container.ejs',
+                    {
+                        title: `Inventory in Container #${containerID} with Weight >= ${minWeight}`,
+                        inventoryList: inventoryList
+                    });
+            })
+            .catch(e => console.error(e.stack));
+        });
+
         this.router.get("/warehouse-container-counts", (req, res) => {
             this.storage.warehouseContainerCounts()
             .then(result => {
@@ -59,15 +78,16 @@ export default class InventoryRoute extends ApiRoute {
         });
 
         this.router.post("/join", (req, res) => {
-            let warehouseID = undefined;
-            ({ warehouseID} = req.body);
-            if (warehouseID == undefined) {
+            let warehouseID: number = NaN;
+            ({ warehouseID } = req.body);
+            if (warehouseID == NaN) {
                 res.status(400).send();
             }
+
             this.storage.joinInventoryAndStorageContainerOnWarehouseID(warehouseID)
                 .then(inventoryList => {
                     res.render("web/page/inventory/join.ejs", {
-                        title: "Join Query",
+                        title: `Inventory in Warehouse #${warehouseID}`,
                         inventoryList: inventoryList
                     })
                 })

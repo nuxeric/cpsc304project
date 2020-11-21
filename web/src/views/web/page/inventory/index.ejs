@@ -8,25 +8,47 @@
 
     <main>
       <div class="hero">
-        <h1>Select Inventory </h1>
+        <h1>Inventory</h1>
 
         <a class="button" href="/inventory/projection">Select SerialNum, ContainerID, TypeName and Weight from Inventory</a>
       </div>
 
-
       <div class="hero">
         <form name="join-warehouse-id-query" method="POST" action="/inventory/join">
-          <h1>Join Inventory</h1>
+          <h2>Inventory by Warehouse - Join Query</h2>
           <div>
             <label for="warehouse-id">
-              <span>Storage Container ID</span>
+              <span>Warehouse ID</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
-            <input type="text" id="warehouse-id" name="warehouseID" placeholder="Warehouse ID..." required maxlength="3" pattern="^[0-9]*$">
+            <input type="number" id="warehouse-id" name="warehouseID" placeholder="Warehouse ID..." pattern="^\d+$" required>
           </div>
-          <button type="submit" class="button">Submit Join Query</button>
+          <button type="submit" class="button">Get Inventory</button>
           <p>
-            Select all inventory items held within this specific warehouse
+            Select all inventory items held within a particular warehouse.
+          </p>
+        </form>
+      </div>
+
+      <div class="hero">
+        <form name="min-weight-from-container-query" method="POST" action="/inventory/min-weight-from-container">
+          <h2>Min Weight in a Container - Select Query</h2>
+          <div>
+            <label for="min-weight">
+              <span>Minimum item weights</span>
+              <abbr title="required" aria-label="required">*</abbr>
+            </label>
+            <input type="number" id="min-weight" name="minWeight" placeholder="Minimum weight of items..." required pattern="^\d+$">
+
+            <label for="container-id">
+              <span>Container ID</span>
+              <abbr title="required" aria-label="required">*</abbr>
+            </label>
+            <input type="number" id="container-id" name="containerID" placeholder="Container ID..." pattern="^\d+$" required>
+          </div>
+          <button type="submit" class="button">Get Inventory</button>
+          <p>
+            Select all inventory items in a container with some minimum weight (greater than or equal to).
           </p>
         </form>
       </div>
