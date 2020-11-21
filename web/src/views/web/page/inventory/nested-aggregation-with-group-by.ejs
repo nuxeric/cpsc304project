@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include('../../layout/head.ejs') -%>
+</head>
+<body>
+  <%- include('../../layout/header.ejs') -%>
+
+  <main>
+    <div class="hero">
+      <h1><%= title %></h1>
+
+      <p>Listing inventory types with smaller than average volume.</p>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Type Name</th>
+          <th>Count</th>
+          <th>Volume (cm<sup>3</sup>)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (inventoryTypes) {%>
+          <% inventoryTypes.forEach(i => { %>
+            <tr>
+              <td><%= i.typeName %></td>
+              <td><%= i.count %></td>
+              <td><%= i.volume %></td>
+            </tr>
+          <% }); %>
+        <% } %>
+        </tbody>
+      </table>
+
+      <p>This is the result of the following query:</p>
+      <pre>
+  SELECT IT.type_name, COUNT(*) as count, (IT.height * IT.width * IT.length) as volume
+  FROM inventory_type IT, inventory I
+  WHERE I.type_name = IT.type_name
+  GROUP BY IT.type_name
+  HAVING (IT.height * IT.width * IT.length) < (
+    SELECT AVG(height * width * length)
+    FROM inventory_type
+  )
+  ORDER BY count DESC, volume ASC;</pre>
+
+    </div>
+  </main>
+
+  <%- include('../../layout/foot.ejs') -%>
+</body>
+</html>
