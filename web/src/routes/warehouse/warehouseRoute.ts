@@ -32,6 +32,23 @@ export default class WarehouseRoute extends ApiRoute {
             })
             .catch(e => console.error(e.stack));
         });
+
+        this.router.post("/min-personnel", (req, res) => {
+            let minimum_personnel_num: number = NaN;
+            ({ minimum_personnel_num } = req.body);
+            if (minimum_personnel_num == NaN) {
+                res.status(400).send();
+            }
+
+            this.storage.aggregationHavingOnWarehouse(minimum_personnel_num)
+            .then(result => {
+                res.render('web/page/warehouse/min-personnel.ejs', {
+                    title: `Warehouses with >= ${minimum_personnel_num} Personnel`,
+                    result: result
+                });
+            })
+            .catch(e => console.error(e.stack));
+        });
     }
 
 }

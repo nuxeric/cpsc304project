@@ -22,8 +22,8 @@
                   </thead>
 
                   <tbody>
-                      <% if (warehouse) {%>
-                        <% warehouse.forEach(r => { %>
+                      <% if (result) {%>
+                        <% result.forEach(r => { %>
                           <tr>
                             <td><%= r.warehouse.id %></td>
                             <td><%= r.warehouse.total_volume %></td>
@@ -45,7 +45,7 @@
   GROUP BY W.id
   HAVING COUNT (*) >= &lt;given minimum number of personnel&gt;;</pre>
 
-                <a class="button" href="/aggregation/index">New Query</a><br />
+                <a class="button" href="/warehouse">New Query</a><br />
             </div>
         </main>
 
