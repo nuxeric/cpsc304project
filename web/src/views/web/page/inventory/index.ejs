@@ -15,18 +15,18 @@
 
 
       <div class="hero">
-        <form name="join-storage-container-query" method="POST" action="/inventory/join">
+        <form name="join-warehouse-id-query" method="POST" action="/inventory/join">
           <h1>Join Inventory</h1>
           <div>
-            <label for="storage-container-id">
+            <label for="warehouse-id">
               <span>Storage Container ID</span>
               <abbr title="required" aria-label="required">*</abbr>
             </label>
-            <input type="text" id="storage-container-id" name="storageContainerId" placeholder="Storage Container ID..." required maxlength="3" pattern="^[0-9]*$">
+            <input type="text" id="warehouse-id" name="warehouseID" placeholder="Warehouse ID..." required maxlength="3" pattern="^[0-9]*$">
           </div>
           <button type="submit" class="button">Submit Join Query</button>
           <p>
-            Select all inventory items held within this specific container
+            Select all inventory items held within this specific warehouse
           </p>
         </form>
       </div>

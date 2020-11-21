@@ -26,13 +26,13 @@ export default class Storage {
         }
     }
 
-    public async joinInventoryAndStorageContainerOnContainerID(containerID: number): Promise<Inventory[]> {
+    public async joinInventoryAndStorageContainerOnWarehouseID(warehouseID: number): Promise<Inventory[]> {
         const query = {
             text:
                 `SELECT I.serial_num, I.container_id, I.type_name, I.weight, I.manufacture_date
-                FROM inventory I, storage_container S
-                WHERE S.id = $1 AND I.container_id = S.id`,
-            values: [containerID],
+                 FROM inventory I, storage_container S
+                 WHERE S.warehouse_id = $1 AND I.container_id = S.id`,
+            values: [warehouseID],
         };
 
         try {

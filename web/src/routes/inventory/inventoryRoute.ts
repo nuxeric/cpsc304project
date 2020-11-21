@@ -59,12 +59,12 @@ export default class InventoryRoute extends ApiRoute {
         });
 
         this.router.post("/join", (req, res) => {
-            let storageContainerId = undefined;
-            ({ storageContainerId} = req.body);
-            if (storageContainerId == undefined) {
+            let warehouseID = undefined;
+            ({ warehouseID} = req.body);
+            if (warehouseID == undefined) {
                 res.status(400).send();
             }
-            this.storage.joinInventoryAndStorageContainerOnContainerID(storageContainerId)
+            this.storage.joinInventoryAndStorageContainerOnWarehouseID(warehouseID)
                 .then(inventoryList => {
                     res.render("web/page/inventory/join.ejs", {
                         title: "Join Query",

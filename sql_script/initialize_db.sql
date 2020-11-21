@@ -376,7 +376,8 @@ VALUES(1, 1, 200, 10, 10, 10),
 	(2, 1, 0.000008, 10, 10, 5),
     (3, 1, 4.25, 15, 5, 20),
     (4, 3, 9000, 30, 30, 30),
-    (5, 4, 507, 20, 20, 10);
+    (5, 4, 507, 20, 20, 10),
+    (6, 4, 500, 20, 20, 10);
     
 INSERT INTO producer(id, street_address, postal_code)
 VALUES (12, '52 Wesbrook Mall', 'V6T1L4'),
@@ -406,8 +407,8 @@ VALUES (1,1,'Fidget Spinner',2,'2017-06-20'),
     (4, 4,'TY Bat Mobile Stuffy', 1, '2017-01-04'),
     (5, 5, 'B/W striped notebook', 10, '2016-04-25'),
     (6, 5,'B/W striped notebook', 10, '2016-04-25'),
-    (7, 5,'TY Bat Mobile Stuffy', 1, '2016-04-22'),
-    (8, 5,'TY Bat Mobile Stuffy', 1, '2016-03-15'),
+    (7, 6,'TY Bat Mobile Stuffy', 1, '2016-04-22'),
+    (8, 6,'TY Bat Mobile Stuffy', 1, '2016-03-15'),
     (9, 5,'Intel Core i7-6700 0.02 Processor', 15, '2016-02-11'),
     (10, 5,'Intel Core i7-6700 0.02 Processor', 15, '2016-09-20');
 
