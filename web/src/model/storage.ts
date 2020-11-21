@@ -1,5 +1,6 @@
 import Database from "../database";
 import Inventory from "./storage/inventory";
+import Warehouse from "./storage/warehouse";
 
 export default class Storage {
     protected db: Database;
@@ -53,6 +54,34 @@ export default class Storage {
             });
         } catch (e) {
             throw new Error('Failed to query inventory types with smaller than average volume');
+        }
+    }
+
+    /**
+     * Returns a list of objects, each with keys:
+     * - warehouse (a Warehouse object)
+     * - containerCount (the number of containers in that warehouse)
+     */
+    public async warehouseContainerCounts(): Promise<Array<Object>> {
+        const query = {
+            text:
+                `SELECT W.*, COUNT(*) as container_count
+                 FROM storage_container S, warehouse W
+                 WHERE W.id = S.warehouse_id
+                 GROUP BY W.id`,
+            values: [],
+        };
+
+        try {
+            const result = await this.db.client.query(query)
+            return result.rows.map(w => {
+                return {
+                    warehouse: new Warehouse(w.id, w.total_volume, w.occupied_volume, w.street_address, w.postal_code),
+                    containerCount: w.container_count
+                };
+            });
+        } catch (e) {
+            throw new Error('Failed to query number of containers per warehouse');
         }
     }
 }
